@@ -7,3 +7,6 @@ run:
 
 test:
 	py.test
+
+gunicorn:
+	python manage.py gunicorn
