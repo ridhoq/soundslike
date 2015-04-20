@@ -1,10 +1,10 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager
+from flask.ext.httpauth import HTTPBasicAuth
 from config import config
 
 db = SQLAlchemy()
-login_manager = LoginManager()
+auth = HTTPBasicAuth()
 
 def create_app(config_name):
     app = Flask(__name__)
