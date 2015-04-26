@@ -1,9 +1,8 @@
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.httpauth import HTTPBasicAuth
+from database import db
 from config import config
 
-db = SQLAlchemy()
 auth = HTTPBasicAuth()
 
 def create_app(config_name):

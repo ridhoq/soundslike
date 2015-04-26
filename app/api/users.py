@@ -1,6 +1,8 @@
 from flask import jsonify, request, make_response, abort
 from ..models import User
+from .. import db
 from . import api
+import pytest
 
 '''
 curl -i -H "Content-Type: application/json" -X POST -d '{"username":"ridhoq", "email": "ridwanhoq@gmail.com, "password": "bizness"}
@@ -22,6 +24,8 @@ def new_user():
             abort(400)
         try:
             user = User(email=payload['email'], username=payload['username'], password=payload['password'])
+            db.session.add(user)
+            db.session.commit()
             return make_response(jsonify(user.to_json()), 200)
         except Exception as ex:
             template = "An exception of type {0} occured. Arguments:\n{1!r}"

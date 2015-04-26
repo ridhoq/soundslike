@@ -4,7 +4,7 @@ from dateutil.parser import *
 import json
 import pytest
 
-@pytest.mark.usefixtures('client_class')
+@pytest.mark.usefixtures('client_class', 'db', 'session')
 class TestUsersApi():
     def test_new_user_empty_payload(self):
         data = dict()
@@ -33,7 +33,7 @@ class TestUsersApi():
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         assert res.status_code == 400
 
-    def test_new_user_success(self):
+    def test_new_user_success(self) :
         data = dict(email='test@test.com', username='test', password='password')
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         assert res.status_code == 200
@@ -41,3 +41,10 @@ class TestUsersApi():
         assert res.json['username'] == data['username']
         assert parse(res.json['member_since'])
         assert len(res.json.keys()) == 3
+
+    def test_new_user_duplicate(self):
+        data = dict(email='test@test.com', username='test', password='password')
+        res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
+        assert res.status_code == 200
+        res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
+        assert res.status_code == 400

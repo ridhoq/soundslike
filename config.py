@@ -14,19 +14,22 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLITE_FILE = 'data-dev.sqlite'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+        'sqlite:///' + os.path.join(basedir, SQLITE_FILE)
 
 
 class TestingConfig(Config):
     TESTING = True
+    SQLITE_FILE = 'data-test.sqlite'
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
-
+        'sqlite:///' + os.path.join(basedir, SQLITE_FILE)
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = False
 
 class ProductionConfig(Config):
+    SQLITE_FILE = 'data.sqlite'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+        'sqlite:///' + os.path.join(basedir, SQLITE_FILE)
 
 
 config = {
