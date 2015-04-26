@@ -1,6 +1,6 @@
 from flask import Flask
 from flask.ext.httpauth import HTTPBasicAuth
-from database import db
+from .database import db
 from config import config
 
 auth = HTTPBasicAuth()
