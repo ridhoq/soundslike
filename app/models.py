@@ -52,11 +52,11 @@ class User(db.Model):
 
     @validates('email')
     def validate_email(self, key, email):
-        assert '@' in email
+        assert '@' in email, "email must be valid"
         return email
 
     def validate_password(self, password):
-        assert len(password) >= 6
+        assert len(password) >= 6, "password must be 6 or more characters"
         return password
 
     def to_json(self):
