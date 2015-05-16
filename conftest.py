@@ -49,6 +49,11 @@ def db(app, request):
     request.addfinalizer(teardown)
     return _db
 
+@pytest.fixture
+def db_class(request, db):
+    if request.cls is not None:
+        request.cls.db = db
+
 @pytest.fixture(scope='function')
 def session(db, request):
     """Creates a new database session for a test."""

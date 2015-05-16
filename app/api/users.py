@@ -1,9 +1,9 @@
 from flask import jsonify, request, make_response
 from sqlalchemy.exc import IntegrityError
 from ..models import User
-from .. import db
+from .. import db, auth
 from . import api
-from .errors import bad_request
+from .errors import bad_request, route_not_found
 
 '''
 curl -i -H "Content-Type: application/json" -X POST -d '{"username":"ridhoq", "email": "ridwanhoq@gmail.com, "password": "bizness"}
@@ -35,6 +35,15 @@ def new_user():
     else:
         message = 'that aint json'
         return bad_request(message)
+
+@api.route('/users/<username>/')
+@auth.login_required
+def get_user(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return route_not_found(user)
+    return make_response(jsonify(user.to_json()), 200)
+
 
 
 
