@@ -68,3 +68,16 @@ class TestUsersApi():
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'this user already exists'
+
+    def test_new_user_duplicate_repeatedly(self):
+        data = dict(email='test@test.com', username='test', password='password')
+        res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
+        assert res.status_code == 200
+        res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'this user already exists'
+        res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'this user already exists'

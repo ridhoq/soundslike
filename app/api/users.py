@@ -12,12 +12,21 @@ curl -i -H "Content-Type: application/json" -X POST -d '{"username":"ridhoq", "e
 def new_user():
     if request.headers['content_type'] == 'application/json':
         payload = request.get_json()
+        # validate payload
         if not request.json or \
                 not 'email' in payload or \
                 not 'username' in payload or \
                 not 'password' in payload:
             message = 'the payload aint right'
             return bad_request(message)
+
+        # validate that user doesn't already exist
+        if User.query.filter_by(username=payload['username']).first() or \
+            User.query.filter_by(email=payload['email']).first():
+            message = 'this user already exists'
+            return bad_request(message)
+
+        # save user to db
         try:
             user = User(email=payload['email'], username=payload['username'], password=payload['password'])
             db.session.add(user)
