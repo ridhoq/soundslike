@@ -9,10 +9,11 @@ itsdangerous==0.24
 Jinja2==2.7.3
 Mako==1.0.1
 MarkupSafe==0.23
-py==1.4.26
-pytest==2.7.0
+py==1.4.31
+pytest==2.8.5
 pytest-flask==0.7.5
 python-dateutil==2.4.2
 six==1.9.0
 SQLAlchemy==0.9.9
 Werkzeug==0.10.1
+wheel==0.26.0
