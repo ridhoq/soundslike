@@ -1,4 +1,4 @@
-"""empty message
+"""add member_since col to users
 
 Revision ID: 5499e052ef8
 Revises: 708af0af87
