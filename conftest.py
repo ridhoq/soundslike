@@ -2,7 +2,7 @@ from app import create_app
 from app import db as _db
 from config import TestingConfig
 
-from alembic.command import upgrade
+from alembic.command import upgrade, downgrade
 from alembic.config import Config
 from flask.ext.migrate import Migrate
 import pytest
@@ -10,7 +10,7 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALEMBIC_CONFIG = os.path.join(basedir, 'migrations/alembic.ini')
-TESTDB_PATH = os.path.join(basedir, TestingConfig.SQLITE_FILE)
+#TESTDB_PATH = os.path.join(basedir, TestingConfig.SQLITE_FILE)
 
 @pytest.fixture(scope='session')
 def app(request):
@@ -25,27 +25,38 @@ def app(request):
     request.addfinalizer(teardown)
     return app
 
-def apply_migrations():
+def apply_migrations(app):
     """Applies all alembic migrations."""
     print(ALEMBIC_CONFIG)
     config = Config(ALEMBIC_CONFIG)
+    config.set_main_option('sqlalchemy.url', app.config['SQLALCHEMY_DATABASE_URI'])
     upgrade(config, 'head')
 
 @pytest.fixture(scope='session')
 def db(app, request):
     """Session-wide test database."""
-    if os.path.exists(TESTDB_PATH):
-        os.unlink(TESTDB_PATH)
+
+    #if os.path.exists(TESTDB_PATH):
+    #    os.unlink(TESTDB_PATH)
 
     def teardown():
-        _db.drop_all()
-        os.unlink(TESTDB_PATH)
+        import pdb; pdb.set_trace()
+        _db.session.close_all()
+        config = Config(ALEMBIC_CONFIG)
+        config.set_main_option('sqlalchemy.url', app.config['SQLALCHEMY_DATABASE_URI'])
+        downgrade(config, 'base')
+        #_db.engine.execute('DROP TABLE songs, users')
+        #downgrade()
+        #_db.drop_all()
 
+
+        #_db.engine.execute('TRUNCATE TABLE alembic_version')
+        #_db.session.commit()
+    #    os.unlink(TESTDB_PATH)
 
     migrate = Migrate(app, _db)
     _db.app = app
-    apply_migrations()
-
+    apply_migrations(app)
     request.addfinalizer(teardown)
     return _db
 
