@@ -33,7 +33,7 @@ class TestSongsApi():
         res = self.client.post(url_for('api.new_song'), headers={'Authorization': self.get_auth_str()}, data=data)
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
-        assert res.json['message'] == 'that aint json'
+        assert res.json['message'] == 'the payload aint right'
 
     def test_new_song_empty_payload(self):
         data = dict()
@@ -54,7 +54,7 @@ class TestSongsApi():
         res = self.client.post(url_for('api.new_song'), headers={'Authorization': self.get_auth_str()}, data=json.dumps(data), content_type='application/json')
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
-        assert res.json['message'] == 'url must be youtube or soundcloud'
+        assert res.json['message'] == 'not a youtube url'
 
     def test_new_song_no_auth(self):
         data = dict(title='Can\'t Tell Me Nothing', artist='Kanye West', url = 'https://www.youtube.com/watch?v=E58qLXBfLrs')
@@ -81,10 +81,3 @@ class TestSongsApi():
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'this song already exists'
-
-
-
-
-
-
-
