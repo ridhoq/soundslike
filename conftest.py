@@ -9,7 +9,8 @@ import pytest
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-ALEMBIC_CONFIG = os.path.join(basedir, 'migrations/alembic.ini')
+ALEMBIC_CONFIG_PATH = os.path.join(basedir, 'migrations/alembic.ini')
+ALEMBIC_CONFIG = Config(ALEMBIC_CONFIG_PATH)
 
 @pytest.fixture(scope='session')
 def app(request):
@@ -24,26 +25,25 @@ def app(request):
     request.addfinalizer(teardown)
     return app
 
-def apply_migrations(app):
-    """Applies all alembic migrations."""
-    print(ALEMBIC_CONFIG)
-    config = Config(ALEMBIC_CONFIG)
-    config.set_main_option('sqlalchemy.url', app.config['SQLALCHEMY_DATABASE_URI'])
-    upgrade(config, 'head')
 
 @pytest.fixture(scope='session')
 def db(app, request):
     """Session-wide test database."""
 
+    # callback to clean up database
     def teardown():
         _db.session.close_all()
-        config = Config(ALEMBIC_CONFIG)
-        config.set_main_option('sqlalchemy.url', app.config['SQLALCHEMY_DATABASE_URI'])
-        downgrade(config, 'base')
+        downgrade(ALEMBIC_CONFIG, 'base')
 
     migrate = Migrate(app, _db)
     _db.app = app
-    apply_migrations(app)
+
+    # set database conn str
+    ALEMBIC_CONFIG.set_main_option('sqlalchemy.url', app.config['SQLALCHEMY_DATABASE_URI'])
+
+    # apply database migrations
+    upgrade(ALEMBIC_CONFIG, 'head')
+
     request.addfinalizer(teardown)
     return _db
 
