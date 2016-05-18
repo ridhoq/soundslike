@@ -12,6 +12,7 @@ def song(name):
 @api.route('/songs/', methods=['POST'])
 @auth.login_required
 def new_song():
+    # check if json
     if request.headers['content_type'] == 'application/json':
         payload = request.get_json()
 
@@ -29,7 +30,7 @@ def new_song():
             message = 'this song already exists'
             return bad_request(message)
 
-        # validate that
+        # add song
         try:
             song = Song(title=payload['title'], \
                         artist=payload['artist'], \

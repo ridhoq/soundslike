@@ -23,7 +23,7 @@ class Song(db.Model):
         self.created = datetime.utcnow()
 
     @validates('url')
-    def validate_url(url):
+    def validate_url(self, key, url):
         # regex from http://stackoverflow.com/a/19377429
         youtube_regex = r'^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$'
         assert re.match(youtube_regex, url) is not None, 'not a youtube url'

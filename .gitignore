@@ -47,3 +47,5 @@ docs/_build/
 # PyBuilder
 target/
 *.sqlite
+# virtualenv
+.env

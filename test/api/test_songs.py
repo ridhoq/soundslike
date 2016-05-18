@@ -33,7 +33,7 @@ class TestSongsApi():
         res = self.client.post(url_for('api.new_song'), headers={'Authorization': self.get_auth_str()}, data=data)
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
-        assert res.json['message'] == 'the payload aint right'
+        assert res.json['message'] == 'that aint json'
 
     def test_new_song_empty_payload(self):
         data = dict()
@@ -74,7 +74,7 @@ class TestSongsApi():
         assert res.json['created_by']['username'] == self.mock_user['username']
 
     def test_new_song_duplicate(self):
-        data = dict(title='Can\'t Tell Me Nothing', artist='Kanye West', url = 'https://www.youtube.com/watch?v=E58qLXBfLrs')
+        data = dict(title='DARE', artist='Gorillaz', url = 'https://www.youtube.com/watch?v=uAOR6ib95kQ')
         res = self.client.post(url_for('api.new_song'), headers={'Authorization': self.get_auth_str()}, data=json.dumps(data), content_type='application/json')
         assert res.status_code == 200
         res = self.client.post(url_for('api.new_song'), headers={'Authorization': self.get_auth_str()}, data=json.dumps(data), content_type='application/json')

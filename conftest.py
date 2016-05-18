@@ -10,7 +10,6 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALEMBIC_CONFIG = os.path.join(basedir, 'migrations/alembic.ini')
-#TESTDB_PATH = os.path.join(basedir, TestingConfig.SQLITE_FILE)
 
 @pytest.fixture(scope='session')
 def app(request):
@@ -36,23 +35,11 @@ def apply_migrations(app):
 def db(app, request):
     """Session-wide test database."""
 
-    #if os.path.exists(TESTDB_PATH):
-    #    os.unlink(TESTDB_PATH)
-
     def teardown():
-        import pdb; pdb.set_trace()
         _db.session.close_all()
         config = Config(ALEMBIC_CONFIG)
         config.set_main_option('sqlalchemy.url', app.config['SQLALCHEMY_DATABASE_URI'])
         downgrade(config, 'base')
-        #_db.engine.execute('DROP TABLE songs, users')
-        #downgrade()
-        #_db.drop_all()
-
-
-        #_db.engine.execute('TRUNCATE TABLE alembic_version')
-        #_db.session.commit()
-    #    os.unlink(TESTDB_PATH)
 
     migrate = Migrate(app, _db)
     _db.app = app

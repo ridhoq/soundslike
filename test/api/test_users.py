@@ -2,7 +2,6 @@ from flask import url_for
 from dateutil.parser import *
 import json
 import pytest
-from time import sleep
 
 @pytest.mark.usefixtures('client_class', 'db', 'session')
 class TestUsersApi():
@@ -74,14 +73,12 @@ class TestUsersApi():
         data = dict(email='test@test.com', username='test', password='password')
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         assert res.status_code == 200
-        sleep(5)
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'this user already exists'
-        sleep(5)
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'this user already exists'
-        
+
