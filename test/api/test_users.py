@@ -2,6 +2,7 @@ from flask import url_for
 from dateutil.parser import *
 import json
 import pytest
+import base64
 
 @pytest.mark.usefixtures('client_class', 'db', 'session')
 class TestUsersApi():
@@ -82,3 +83,20 @@ class TestUsersApi():
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'this user already exists'
 
+    def test_get_user_success(self):
+        data = dict(email='test@test.com', username='test', password='password')
+        res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
+        auth_str = 'Basic ' + base64.b64encode(b'test:password').decode('utf-8')
+        res = self.client.get( url_for('api.get_user', username=data['username'] ), headers={'Authorization':auth_str})
+        assert res.status_code == 200
+        assert res.json['email'] == data['email']
+        assert res.json['username'] == data['username']
+        assert res.json['member_since']
+
+    def test_get_non_existant_user(self):
+        data = dict(email='test@test.com', username='test', password='password')
+        res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
+        auth_str = 'Basic ' + base64.b64encode(b'test:password').decode('utf-8')
+        res = self.client.get( url_for('api.get_user', username='test2' ), headers={'Authorization':auth_str})
+        assert res.status_code == 404
+        assert res.json['error'] == 'This route does not exist'
