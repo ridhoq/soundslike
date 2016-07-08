@@ -81,3 +81,10 @@ class TestSongsApi():
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'this song already exists'
+
+    def test_get_song_invalid_id(self):
+        song_id = 1337
+        res = self.client.get(url_for('api.get_song', id=song_id))
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'incorrect route'

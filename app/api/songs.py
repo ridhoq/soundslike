@@ -9,6 +9,10 @@ from .errors import bad_request, route_not_found
 def song(name):
     return jsonify(name=name)
 
+@api.route('/songs/<int:id>')
+def get_song(id):
+    pass
+
 @api.route('/songs/', methods=['POST'])
 @auth.login_required
 def new_song():
