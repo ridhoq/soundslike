@@ -45,15 +45,10 @@ def new_user():
         message = 'that aint json'
         return bad_request(message)
 
-@api.route('/users/<username>/')
+@api.route('/users/<username>')
 @auth.login_required
 def get_user(username):
     user = User.query.filter_by(username=username).first()
     if not user:
         return route_not_found(user)
     return make_response(jsonify(user.to_json()), 200)
-
-
-
-
-
