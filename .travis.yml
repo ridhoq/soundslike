@@ -1,6 +1,6 @@
 language: python
 python:
-- '3.4'
+  - '3.5'
 install: pip install -r requirements.txt
 script: make test
 deploy:
@@ -11,3 +11,9 @@ deploy:
     develop: soundslike-staging
   on:
     repo: soundslike/soundslike-server
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database soundslike-test;' -U postgres
+env:
+  - TEST_DATABASE_URL=postgresql://postgres@localhost:5432/soundslike-test

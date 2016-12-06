@@ -4,11 +4,11 @@ API server for soundslike written in flask
 ##Setup
 You'll need python 3, pip, postgresql, and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/index.html)
 
-1. Create a database user and a test database (named something like soundslike-test)
+1. Create a database user and a test database (named something like `soundslike-test`)
 2. Run `mkvirtualenv soundslike` to create a new virtualenv
 3. Add the following line to `$WORKON_HOME/soundslike/bin/preactivate`
 ```shell
-export TEST_DATABASE_URL=postgresql://username:pass@localhost:5432/soundslike_test
+export TEST_DATABASE_URL=postgresql://username:pass@localhost:5432/soundslike-test
 ```
 and the following line to `$WORKON_HOME/soundslike/bin/postactivate`
 ```shell
