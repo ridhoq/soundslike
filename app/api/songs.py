@@ -11,7 +11,10 @@ def song(name):
 
 @api.route('/songs/<int:id>')
 def get_song(id):
-    pass
+    song = Song.query.filter_by(id=id).first()
+    if not song:
+        return route_not_found(song)
+    return make_response(jsonify(song.to_json()), 200)
 
 @api.route('/songs/', methods=['POST'])
 @auth.login_required

@@ -99,4 +99,4 @@ class TestUsersApi():
         auth_str = 'Basic ' + base64.b64encode(b'test:password').decode('utf-8')
         res = self.client.get( url_for('api.get_user', username='test2' ), headers={'Authorization':auth_str})
         assert res.status_code == 404
-        assert res.json['error'] == 'This route does not exist'
+        assert res.json['error'] == 'not found'
