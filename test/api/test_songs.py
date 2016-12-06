@@ -87,3 +87,16 @@ class TestSongsApi():
         res = self.client.get(url_for('api.get_song', id=song_id))
         assert res.status_code == 404
         assert res.json['error'] == 'not found'
+
+    def test_get_song_success(self):
+        data = dict(title='Fade', artist='Kanye West', url = 'https://www.youtube.com/watch?v=IxGvm6btP1A')
+        res = self.client.post(url_for('api.new_song'), headers={'Authorization': self.get_auth_str()}, data=json.dumps(data), content_type='application/json')
+        assert res.status_code == 200
+        id = res.json['id']
+        res = self.client.get(url_for('api.get_song', id=id))
+        assert res.status_code == 200
+        assert res.json['title'] == data['title']
+        assert res.json['artist'] == data['artist']
+        assert res.json['url'] == data['url']
+        assert res.json['id']
+        assert res.json['created_by']['username'] == self.mock_user['username']
