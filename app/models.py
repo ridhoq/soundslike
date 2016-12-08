@@ -97,3 +97,10 @@ class User(db.Model):
             'member_since': self.member_since
         }
         return json_user
+
+class SongRelation(db.Model):
+    __tablename__ = 'song_relations'
+    id = db.Column(db.Integer, primary_key=True)
+    song1_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
+    song2_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
+    __table_args__ = (db.UniqueConstraint('song1_id', 'song2_id', name='uc_song_relation'),)
