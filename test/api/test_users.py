@@ -4,7 +4,7 @@ import json
 import pytest
 import base64
 
-@pytest.mark.usefixtures('client_class', 'db', 'session')
+@pytest.mark.usefixtures('client_class', 'db_class')
 class TestUsersApi():
     def test_new_user_invalid_payload(self):
         data = ''
@@ -62,7 +62,7 @@ class TestUsersApi():
         assert len(res.json.keys()) == 3
 
     def test_new_user_duplicate(self):
-        data = dict(email='test@test.com', username='test', password='password')
+        data = dict(email='test1@test.com', username='test1', password='password')
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         assert res.status_code == 200
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
@@ -71,7 +71,7 @@ class TestUsersApi():
         assert res.json['message'] == 'this user already exists'
 
     def test_new_user_duplicate_repeatedly(self):
-        data = dict(email='test@test.com', username='test', password='password')
+        data = dict(email='test2@test.com', username='test2', password='password')
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         assert res.status_code == 200
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
@@ -93,10 +93,10 @@ class TestUsersApi():
         assert res.json['username'] == data['username']
         assert res.json['member_since']
 
-    def test_get_non_existant_user(self):
+    def test_get_non_existent_user(self):
         data = dict(email='test@test.com', username='test', password='password')
         res = self.client.post(url_for('api.new_user'), data=json.dumps(data), content_type='application/json')
         auth_str = 'Basic ' + base64.b64encode(b'test:password').decode('utf-8')
-        res = self.client.get( url_for('api.get_user', username='test2' ), headers={'Authorization':auth_str})
+        res = self.client.get( url_for('api.get_user', username='test_non_existent' ), headers={'Authorization':auth_str})
         assert res.status_code == 404
         assert res.json['error'] == 'not found'

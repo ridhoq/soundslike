@@ -6,7 +6,6 @@ from .errors import unauthorized
 
 @auth.verify_password
 def verify_password(username_or_token, password):
-    print('hello from verify')
     if password == '':
         g.current_user = User.verify_auth_token(username_or_token)
         g.token_used = True
