@@ -49,6 +49,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     member_since = db.Column(db.DateTime(), default=datetime.utcnow())
     songs_created = db.relationship('Song', backref='user', lazy='dynamic')
+    created = db.Column(db.DateTime(), default=datetime.utcnow())
 
     def __init__(self, email, username, password):
         self.email = email
@@ -103,4 +104,42 @@ class SongRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     song1_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
     song2_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
+    created = db.Column(db.DateTime(), default=datetime.utcnow())
     __table_args__ = (db.UniqueConstraint('song1_id', 'song2_id', name='uc_song_relation'),)
+
+class SongRelationVote(db.Model):
+    __tablename__ = 'song_relation_votes'
+    id = db.Column(db.Integer, primary_key=True)
+    relation_id = db.Column(db.Integer, db.ForeignKey('song_relations.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    has_voted = db.Column(db.Boolean)
+    created = db.Column(db.DateTime(), default=datetime.utcnow())
+
+'''
+    -- count votes for a given relation
+    select count(*)
+    from song_relation_votes
+    where relation_id = {my_relation_id}
+    and has_voted = 1
+
+    -- get all the song relation pairs this user has voted for
+    select s1.title, s2.title
+    from song_relations sr
+    join songs s1 on s1.id = sr.song1_id
+    join songs s2 on s2.id = sr.song2_id
+    join song_relation_votes svr on svr.relation_id = sr.id
+    where svr.user_id = {my_user_id}
+    and svr.has_voted = 1
+
+    -- get top 10 songs related to this song
+    select top 10 s.title, s.artist, s.url, count(srv.*)
+    from songs s
+    join song_relations sr on sr.song1_id = s.id or sr.song2_id = s.id
+    join song_relation_votes srv on srv.relation_id = sr.id
+    join songs srs on (srs.id = sr.song1_id and srs.id <> sr.song2_id)
+    or (srs.id = sr.song2_id and srs.id <> sr.song1_id)
+    where s.id = {my_song_id}
+    order by count(srv.*)
+
+
+'''
