@@ -107,23 +107,6 @@ class TestSongRelationsApi():
             self.songs[username] = (song1_dict, song2_dict)
         self.db.session.commit()
 
-    # def test_setup(self):
-    #     # add users to database
-    #     for user in self.users.values():
-    #         res = self.client.post(url_for('api.new_user'),
-    #                          data=json.dumps(user),
-    #                          content_type='application/json')
-    #         print(res)
-    #
-    #     # add songs to database
-    #     for username, st in self.songs.items():
-    #         self.client.post(url_for('api.new_song'),
-    #                          headers={'Authorization': self.get_auth_str(self.users[username])},
-    #                          data=json.dumps(st[0]), content_type='application/json')
-    #         self.client.post(url_for('api.new_song'),
-    #                          headers={'Authorization': self.get_auth_str(self.users[username])},
-    #                          data=json.dumps(st[1]), content_type='application/json')
-
     def test_new_song_relation_invalid_payload(self):
         data = ''
         res = self.client.post(url_for('api.new_song_relation'),
