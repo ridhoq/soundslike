@@ -1,4 +1,4 @@
-"""empty message
+"""add cols to songs
 
 Revision ID: 24e14488095
 Revises: 5499e052ef8
