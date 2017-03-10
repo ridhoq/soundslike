@@ -110,7 +110,7 @@ class SongRelation(db.Model):
 class SongRelationVote(db.Model):
     __tablename__ = 'song_relation_votes'
     id = db.Column(db.Integer, primary_key=True)
-    relation_id = db.Column(db.Integer, db.ForeignKey('song_relations.id'))
+    song_relation_id = db.Column(db.Integer, db.ForeignKey('song_relations.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     has_voted = db.Column(db.Boolean)
     created = db.Column(db.DateTime(), default=datetime.utcnow())
