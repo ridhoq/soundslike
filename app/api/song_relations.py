@@ -1,6 +1,6 @@
-from flask import jsonify, request, make_response
+from flask import jsonify, request, make_response, g
 from sqlalchemy.exc import IntegrityError
-from ..models import User
+from ..models import SongRelation, SongRelationVote
 from .. import db, auth
 from . import api
 from .errors import bad_request, route_not_found
@@ -21,9 +21,23 @@ def new_song_relation():
         try:
             song1_id = payload['song1_id']
             song2_id = payload['song2_id']
+
+            # check if we got the same song id for both ids
             if song1_id == song2_id:
                 message = 'cannot relate a song to itself'
                 return bad_request(message)
+
+            # check if we got a duplicate song relation
+            if (SongRelation.query.filter_by(song1_id=song1_id, song2_id=song2_id).first() is not None or
+                SongRelation.query.filter_by(song1_id=song2_id, song2_id=song1_id).first() is not None):
+                message = 'this song relation already exists'
+                return bad_request(message)
+
+            song_relation = SongRelation(song1_id, song2_id, g.current_user)
+            db.session.add(song_relation)
+            db.session.commit()
+            # vote_song_relation_helper(song_relation.id)
+            return make_response(jsonify(song_relation.to_json()), 200)
 
         except Exception as ex:
             template = "An exception of type {0} occured. Arguments:\n{1!r}"
@@ -45,3 +59,8 @@ def vote_song_relation():
 
 def unvote_song_relation():
     pass
+
+def vote_song_relation_helper(song_relation_id):
+    song_relation_vote = SongRelationVote(song_relation_id, g.current_user)
+    db.session.add(song_relation_vote)
+    db.session.commit()

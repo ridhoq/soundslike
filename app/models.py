@@ -104,8 +104,24 @@ class SongRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     song1_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
     song2_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     created = db.Column(db.DateTime(), default=datetime.utcnow())
     __table_args__ = (db.UniqueConstraint('song1_id', 'song2_id', name='uc_song_relation'),)
+
+    def __init__(self, song1_id, song2_id, user):
+        self.song1_id = song1_id
+        self.song2_id = song2_id
+        self.user_id = user.id
+        self.created = datetime.utcnow()
+
+    def to_json(self):
+        json_song_relation = {
+            'song1': Song.query.filter_by(id=self.song1_id).first().to_json(),
+            'song2': Song.query.filter_by(id=self.song2_id).first().to_json(),
+            'created': self.created,
+            'created_by': User.query.filter_by(id=self.user_id).first().to_json()
+        }
+        return json_song_relation
 
 class SongRelationVote(db.Model):
     __tablename__ = 'song_relation_votes'
@@ -114,6 +130,12 @@ class SongRelationVote(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     has_voted = db.Column(db.Boolean)
     created = db.Column(db.DateTime(), default=datetime.utcnow())
+
+    def __init__(self, song_relation_id, user):
+        self.song_relation_id = song_relation_id
+        self.user_id = user.id
+        self.has_voted = True
+        self.created = datetime.utcnow()
 
 '''
     -- count votes for a given relation

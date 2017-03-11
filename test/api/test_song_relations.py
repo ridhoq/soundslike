@@ -81,7 +81,7 @@ class TestSongRelationsApi():
                             password=user['password'])
             self.db.session.add(user_obj)
 
-        self.db.session.commit()
+        # self.db.session.commit()
 
         # add songs to database
         for username, st in self.songs.items():
@@ -105,7 +105,7 @@ class TestSongRelationsApi():
             song1_dict['id'] = song1.id
             song2_dict['id'] = song2.id
             self.songs[username] = (song1_dict, song2_dict)
-        self.db.session.commit()
+        # self.db.session.commit()
 
     def test_new_song_relation_invalid_payload(self):
         data = ''
@@ -165,3 +165,31 @@ class TestSongRelationsApi():
         assert res.status_code == 400
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'cannot relate a song to itself'
+
+    def test_new_song_relation_success(self):
+        data = dict(song1_id=self.songs['hiphop'][0]['id'],
+                    song2_id=self.songs['hiphop'][1]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+
+    def test_new_song_relation_duplicate(self):
+        data = dict(song1_id=self.songs['hiphop'][1]['id'],
+                    song2_id=self.songs['indie'][0]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'this song relation already exists'
+
+
