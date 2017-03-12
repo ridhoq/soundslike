@@ -28,15 +28,15 @@ def new_song_relation():
                 return bad_request(message)
 
             # check if we got a duplicate song relation
-            if (SongRelation.query.filter_by(song1_id=song1_id, song2_id=song2_id).first() is not None or
-                SongRelation.query.filter_by(song1_id=song2_id, song2_id=song1_id).first() is not None):
+            if SongRelation.query.filter_by(song1_id=song1_id, song2_id=song2_id).first() is not None or \
+               SongRelation.query.filter_by(song1_id=song2_id, song2_id=song1_id).first() is not None:
                 message = 'this song relation already exists'
                 return bad_request(message)
 
             song_relation = SongRelation(song1_id, song2_id, g.current_user)
             db.session.add(song_relation)
             db.session.commit()
-            # vote_song_relation_helper(song_relation.id)
+            vote_song_relation_helper(song_relation.id)
             return make_response(jsonify(song_relation.to_json()), 200)
 
         except Exception as ex:
@@ -54,8 +54,15 @@ def new_song_and_song_relation():
 def get_song_relations():
     pass
 
-def vote_song_relation():
-    pass
+@api.route('/song_relations/<int:id>/vote', methods=['POST'])
+@auth.login_required
+def vote_song_relation(id):
+    if SongRelationVote.query.filter_by(song_relation_id=id, user_id=g.current_user.id).first():
+        message = 'you''ve already voted for this song relation'
+        return bad_request(message)
+    vote_song_relation_helper(id)
+    song_relation = SongRelation.query.filter_by(id=id).first()
+    return make_response(jsonify(song_relation.to_json()), 200)
 
 def unvote_song_relation():
     pass

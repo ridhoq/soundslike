@@ -80,8 +80,7 @@ class TestSongRelationsApi():
                             email=user['email'],
                             password=user['password'])
             self.db.session.add(user_obj)
-
-        # self.db.session.commit()
+        self.db.session.commit()
 
         # add songs to database
         for username, st in self.songs.items():
@@ -105,7 +104,7 @@ class TestSongRelationsApi():
             song1_dict['id'] = song1.id
             song2_dict['id'] = song2.id
             self.songs[username] = (song1_dict, song2_dict)
-        # self.db.session.commit()
+        self.db.session.commit()
 
     def test_new_song_relation_invalid_payload(self):
         data = ''
@@ -174,6 +173,13 @@ class TestSongRelationsApi():
                                content_type='application/json',
                                data=json.dumps(data))
         assert res.status_code == 200
+        assert res.json['id']
+        assert res.json['song1']['id'] == self.songs['hiphop'][0]['id']
+        assert res.json['song2']['id'] == self.songs['hiphop'][1]['id']
+        assert res.json['has_voted'] == True
+        assert res.json['vote_count'] == 1
+        assert res.json['created']
+        assert res.json['created_by']['username'] == self.hiphop_user['username']
 
     def test_new_song_relation_duplicate(self):
         data = dict(song1_id=self.songs['hiphop'][1]['id'],
@@ -192,4 +198,41 @@ class TestSongRelationsApi():
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'this song relation already exists'
 
+    def test_song_relation_vote_by_another_user(self):
+        data = dict(song1_id=self.songs['indie'][1]['id'],
+                    song2_id=self.songs['indie'][0]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['indie']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+        song_relation_id = res.json['id']
+        assert res.json['has_voted'] == True
+        assert res.json['vote_count'] == 1
+
+        res = self.client.post(url_for('api.vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json')
+        assert res.status_code == 200
+        assert res.json['has_voted'] == True
+        assert res.json['vote_count'] == 2
+
+    def test_song_relation_vote_twice(self):
+        data = dict(song1_id=self.songs['indie'][1]['id'],
+                    song2_id=self.songs['hiphop'][0]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['indie']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+        song_relation_id = res.json['id']
+        assert res.json['has_voted'] == True
+        assert res.json['vote_count'] == 1
+
+        res = self.client.post(url_for('api.vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['indie']),
+                               content_type='application/json')
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'you''ve already voted for this song relation'
 

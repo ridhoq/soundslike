@@ -116,8 +116,11 @@ class SongRelation(db.Model):
 
     def to_json(self):
         json_song_relation = {
+            'id': self.id,
             'song1': Song.query.filter_by(id=self.song1_id).first().to_json(),
             'song2': Song.query.filter_by(id=self.song2_id).first().to_json(),
+            'has_voted': SongRelationVote.query.filter_by(song_relation_id=self.id, user_id=self.user_id).first().has_voted,
+            'vote_count': SongRelationVote.query.filter_by(song_relation_id=self.id).count(),
             'created': self.created,
             'created_by': User.query.filter_by(id=self.user_id).first().to_json()
         }
