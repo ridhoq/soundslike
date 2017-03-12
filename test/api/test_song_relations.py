@@ -236,3 +236,44 @@ class TestSongRelationsApi():
         assert res.json['error'] == 'bad request'
         assert res.json['message'] == 'you''ve already voted for this song relation'
 
+    def test_song_relation_vote_then_delete(self):
+        data = dict(song1_id=self.songs['edm'][0]['id'],
+                    song2_id=self.songs['hiphop'][0]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['edm']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+        assert res.json['has_voted'] == True
+        assert res.json['vote_count'] == 1
+        song_relation_id = res.json['id']
+
+        res = self.client.post(url_for('api.vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json')
+        assert res.status_code == 200
+        assert res.json['has_voted'] == True
+        assert res.json['vote_count'] == 2
+
+        res = self.client.delete(url_for('api.delete_vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json')
+        assert res.status_code == 200
+        assert res.json['has_voted'] == False
+        assert res.json['vote_count'] == 1
+
+        res = self.client.delete(url_for('api.delete_vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['edm']),
+                               content_type='application/json')
+        assert res.status_code == 200
+        assert res.json['has_voted'] == False
+        assert res.json['vote_count'] == 0
+
+    def test_song_relation_vote_delete_nonexistent_vote(self):
+        res = self.client.delete(url_for('api.delete_vote_song_relation', id=420),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json')
+        assert res.status_code == 400
+        assert res.json['message'] == 'this user has not voted for this relation'
+
+

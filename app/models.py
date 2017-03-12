@@ -114,12 +114,13 @@ class SongRelation(db.Model):
         self.user_id = user.id
         self.created = datetime.utcnow()
 
-    def to_json(self):
+    def to_json(self, user):
         json_song_relation = {
             'id': self.id,
             'song1': Song.query.filter_by(id=self.song1_id).first().to_json(),
             'song2': Song.query.filter_by(id=self.song2_id).first().to_json(),
-            'has_voted': SongRelationVote.query.filter_by(song_relation_id=self.id, user_id=self.user_id).first().has_voted,
+            'has_voted': True if SongRelationVote.query.filter_by(
+                song_relation_id=self.id, user_id=user.id).first() is not None else False,
             'vote_count': SongRelationVote.query.filter_by(song_relation_id=self.id).count(),
             'created': self.created,
             'created_by': User.query.filter_by(id=self.user_id).first().to_json()
@@ -131,13 +132,11 @@ class SongRelationVote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     song_relation_id = db.Column(db.Integer, db.ForeignKey('song_relations.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    has_voted = db.Column(db.Boolean)
     created = db.Column(db.DateTime(), default=datetime.utcnow())
 
     def __init__(self, song_relation_id, user):
         self.song_relation_id = song_relation_id
         self.user_id = user.id
-        self.has_voted = True
         self.created = datetime.utcnow()
 
 '''

@@ -37,7 +37,7 @@ def new_song_relation():
             db.session.add(song_relation)
             db.session.commit()
             vote_song_relation_helper(song_relation.id)
-            return make_response(jsonify(song_relation.to_json()), 200)
+            return make_response(jsonify(song_relation.to_json(g.current_user)), 200)
 
         except Exception as ex:
             template = "An exception of type {0} occured. Arguments:\n{1!r}"
@@ -62,10 +62,19 @@ def vote_song_relation(id):
         return bad_request(message)
     vote_song_relation_helper(id)
     song_relation = SongRelation.query.filter_by(id=id).first()
-    return make_response(jsonify(song_relation.to_json()), 200)
+    return make_response(jsonify(song_relation.to_json(g.current_user)), 200)
 
-def unvote_song_relation():
-    pass
+@api.route('/song_relations/<int:id>/vote', methods=['DELETE'])
+@auth.login_required
+def delete_vote_song_relation(id):
+    song_relation_vote = SongRelationVote.query.filter_by(song_relation_id=id, user_id=g.current_user.id).first()
+    if song_relation_vote is None:
+        message = 'this user has not voted for this relation'
+        return bad_request(message)
+    db.session.delete(song_relation_vote)
+    db.session.commit()
+    song_relation = SongRelation.query.filter_by(id=id).first()
+    return make_response(jsonify(song_relation.to_json(g.current_user)), 200)
 
 def vote_song_relation_helper(song_relation_id):
     song_relation_vote = SongRelationVote(song_relation_id, g.current_user)

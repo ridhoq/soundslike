@@ -20,7 +20,6 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('song_relation_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('has_voted', sa.Boolean(), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['song_relation_id'], ['song_relations.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
