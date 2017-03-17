@@ -62,7 +62,11 @@ def new_song():
 
 @api.route('/songs/<int:id>/related')
 def get_song_relations(id):
-    top = request.args.get('top')
+    top_str = request.args.get('top')
+    if not top_str.isdigit() or not int(top_str) > 0:
+        message = 'top query param must be an int greater than 0'
+        return bad_request(message)
+    top = int(request.args.get('top'))
     song = Song.query.filter_by(id=id).first()
     if not song:
         return route_not_found(song)

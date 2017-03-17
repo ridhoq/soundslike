@@ -331,3 +331,22 @@ class TestSongRelationsApi():
         assert len(res.json) == 1
         assert res.json[0]['id'] == self.songs['edm'][1]['id']
 
+    def test_get_song_relations_top_query_param(self):
+        song_id = self.songs['edm'][0]['id']
+        res = self.client.get(url_for('api.get_song_relations', id=song_id, top=0),
+                              content_type='application/json')
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'top query param must be an int greater than 0'
+
+        res = self.client.get(url_for('api.get_song_relations', id=song_id, top=-1),
+                              content_type='application/json')
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'top query param must be an int greater than 0'
+
+        res = self.client.get(url_for('api.get_song_relations', id=song_id, top='10; select * from users'),
+                              content_type='application/json')
+        assert res.status_code == 400
+        assert res.json['error'] == 'bad request'
+        assert res.json['message'] == 'top query param must be an int greater than 0'
