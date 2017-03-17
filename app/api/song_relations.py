@@ -48,12 +48,6 @@ def new_song_relation():
         message = 'that aint json'
         return bad_request(message)
 
-def new_song_and_song_relation():
-    pass
-
-def get_song_relations():
-    pass
-
 @api.route('/song_relations/<int:id>/vote', methods=['POST'])
 @auth.login_required
 def vote_song_relation(id):

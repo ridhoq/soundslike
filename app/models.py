@@ -41,6 +41,32 @@ class Song(db.Model):
 
         return json_song
 
+    def get_related_songs_json(self, top=None):
+        # default to pulling top 10 results
+        if top is None:
+            top = 10
+        query_str = '''
+            select rel.id, rel.title, rel.url, rel.artist, rel.created, rel.user_id, count(srv) as vote_count
+            from songs as s
+            join song_relations as sr
+                on s.id = sr.song1_id
+                or s.id = sr.song2_id
+            join song_relation_votes as srv
+                on srv.song_relation_id = sr.id
+            join songs as rel
+                on (rel.id = sr.song1_id and rel.id <> sr.song2_id)
+                or (rel.id = sr.song2_id and rel.id <> sr.song1_id)
+            where s.id = {0} and rel.id <> {0}
+            group by rel.id, rel.title, rel.url, rel.artist, rel.created, rel.user_id
+            order by vote_count desc
+            limit {1}
+        '''.format(self.id, top)
+        result = db.session.execute(query_str).fetchall()
+        json = [dict(r) for r in result]
+        return json
+
+
+
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -119,13 +145,16 @@ class SongRelation(db.Model):
             'id': self.id,
             'song1': Song.query.filter_by(id=self.song1_id).first().to_json(),
             'song2': Song.query.filter_by(id=self.song2_id).first().to_json(),
-            'has_voted': True if SongRelationVote.query.filter_by(
-                song_relation_id=self.id, user_id=user.id).first() is not None else False,
+            'has_voted': self.has_voted(user),
             'vote_count': SongRelationVote.query.filter_by(song_relation_id=self.id).count(),
             'created': self.created,
             'created_by': User.query.filter_by(id=self.user_id).first().to_json()
         }
         return json_song_relation
+
+    def has_voted(self, user):
+        return True if SongRelationVote.query.filter_by(
+                song_relation_id=self.id, user_id=user.id).first() is not None else False
 
 class SongRelationVote(db.Model):
     __tablename__ = 'song_relation_votes'

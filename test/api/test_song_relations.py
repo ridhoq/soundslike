@@ -47,7 +47,7 @@ class TestSongRelationsApi():
     }
     edm_song_2 = {
         'title': 'GLOWED UP (feat. Anderson .Paak)',
-        'artist': 'Flume',
+        'artist': 'Kaytranada',
         'url': 'https://www.youtube.com/watch?v=yaWesK-nWts'
     }
     indie_song_1 = {
@@ -276,4 +276,58 @@ class TestSongRelationsApi():
         assert res.status_code == 400
         assert res.json['message'] == 'this user has not voted for this relation'
 
+    def test_song_relation_get_related_songs(self):
+        data = dict(song1_id=self.songs['edm'][0]['id'],
+                    song2_id=self.songs['edm'][1]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['edm']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+        song_relation_id = res.json['id']
+
+        res = self.client.post(url_for('api.vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json')
+        assert res.status_code == 200
+        res = self.client.post(url_for('api.vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['indie']),
+                               content_type='application/json')
+        assert res.status_code == 200
+
+        data = dict(song1_id=self.songs['edm'][0]['id'],
+                    song2_id=self.songs['hiphop'][1]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+        song_relation_id = res.json['id']
+        res = self.client.post(url_for('api.vote_song_relation', id=song_relation_id),
+                               headers=self.get_auth_header(self.users['indie']),
+                               content_type='application/json')
+        assert res.status_code == 200
+
+        data = dict(song1_id=self.songs['edm'][0]['id'],
+                    song2_id=self.songs['indie'][0]['id'])
+        res = self.client.post(url_for('api.new_song_relation'),
+                               headers=self.get_auth_header(self.users['hiphop']),
+                               content_type='application/json',
+                               data=json.dumps(data))
+        assert res.status_code == 200
+
+        song_id = self.songs['edm'][0]['id']
+        res = self.client.get(url_for('api.get_song_relations', id=song_id, top=10),
+                               content_type='application/json')
+        assert res.status_code == 200
+        assert len(res.json) == 3
+        assert res.json[0]['id'] == self.songs['edm'][1]['id']
+        assert res.json[1]['id'] == self.songs['hiphop'][1]['id']
+        assert res.json[2]['id'] == self.songs['indie'][0]['id']
+
+        res = self.client.get(url_for('api.get_song_relations', id=song_id, top=1),
+                              content_type='application/json')
+        assert res.status_code == 200
+        assert len(res.json) == 1
+        assert res.json[0]['id'] == self.songs['edm'][1]['id']
 
