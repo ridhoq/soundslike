@@ -20,7 +20,9 @@
   "homepage": "https://github.com/soundslike/soundslike-client#readme",
   "dependencies": {
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "react-router-dom": "^4.0.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "babel-core": "^6.20.0",
