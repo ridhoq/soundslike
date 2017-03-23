@@ -1,6 +1,5 @@
 from flask import url_for
 from app.models import User
-#from dateutil.parser import *
 import json
 import pytest
 import base64

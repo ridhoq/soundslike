@@ -1,5 +1,4 @@
 from flask import url_for
-from dateutil.parser import *
 import json
 import pytest
 import base64
@@ -58,7 +57,6 @@ class TestUsersApi():
         assert res.status_code == 200
         assert res.json['email'] == data['email']
         assert res.json['username'] == data['username']
-        assert parse(res.json['member_since'])
         assert len(res.json.keys()) == 3
 
     def test_new_user_duplicate(self):

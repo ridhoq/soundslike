@@ -2,11 +2,11 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-    entry: ["whatwg-fetch", "./ui/app.js"],
+    entry: ["whatwg-fetch", "./static/app.js"],
     output: {
-        path: path.join(__dirname, "ui-dist"),
+        path: path.join(__dirname, "app/static"),
         filename: "bundle.js",
-        publicPath: "/"
+        publicPath: "/static/"
     },
     module: {
         loaders: [
@@ -18,6 +18,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin()
+        new HtmlWebpackPlugin({
+            title: 'Soundslike',
+        })
     ]
 };

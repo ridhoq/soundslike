@@ -99,5 +99,5 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
-/ui-dist/
+app/static
 

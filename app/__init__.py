@@ -4,14 +4,12 @@ from flask.ext.httpauth import HTTPBasicAuth
 from .database import db
 from config import config
 import os
-from flask import make_response
 
 auth = HTTPBasicAuth()
 
 
 def create_app(config_name):
-    basedir = config["default"].basedir
-    app = Flask(__name__, static_folder=os.path.join(basedir, "ui-dist"), static_url_path='')
+    app = Flask(__name__, static_url_path='/static')
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
@@ -20,7 +18,12 @@ def create_app(config_name):
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
-    from .site import site as site_blueprint
-    app.register_blueprint(site_blueprint, url_prefix='')
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def catch_all(path):
+        return app.send_static_file('index.html')
+
+    # from .site import site as site_blueprint
+    # app.register_blueprint(site_blueprint, url_prefix='')
 
     return app

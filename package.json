@@ -1,5 +1,5 @@
 {
-  "name": "soundslike-client",
+  "name": "soundslike",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/soundslike/soundslike-client.git"
+    "url": "git+https://github.com/soundslike/soundslike"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/soundslike/soundslike-client/issues"
+    "url": "https://github.com/soundslike/soundslike"
   },
-  "homepage": "https://github.com/soundslike/soundslike-client#readme",
+  "homepage": "https://github.com/soundslike/soundslike",
   "dependencies": {
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
