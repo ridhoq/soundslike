@@ -1,4 +1,4 @@
-.PHONY: test
+.PHONY: test gunicorn run
 
 all: run
 

@@ -19,9 +19,10 @@ class GunicornCommand(Command):
         return options
 
     def run(self, *args, **kwargs):
-        run_args = sys.argv[2:]
-        run_args.append('manage:app')
-        os.execvp('gunicorn', [''] + run_args)
+        from gunicorn.app.wsgiapp import WSGIApplication
+        app = WSGIApplication()
+        app.app_uri = 'manage:app'
+        return app.run()
 
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
