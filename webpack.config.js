@@ -9,7 +9,7 @@ module.exports = {
         publicPath: "/static/"
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
@@ -19,7 +19,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Soundslike',
+            title: 'soundslike',
         })
     ]
 };
