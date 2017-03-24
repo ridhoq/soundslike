@@ -55,7 +55,7 @@ export default class SongSingleContainer extends Component {
         }
 
         return <div>
-            <pre>{JSON.stringify(song, null, "  ")}</pre>
+            <p>{JSON.stringify(song, null, "  ")}</p>
         </div>
     }
 }
