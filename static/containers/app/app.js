@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Link} from "react-router-dom";
 
 export class AppHeader extends Component {
     render() {
@@ -6,7 +7,7 @@ export class AppHeader extends Component {
             <nav className="navbar navbar-toggleable-md navbar-inverse bg-primary main-nav">
                 <div className="container">
                     <ul className="nav navbar-nav flex-grow">
-                        <a className="navbar-brand" href="#">soundslike</a>
+                        <Link to="/" className="navbar-brand">soundslike</Link>
                     </ul>
                     <ul className="nav navbar-nav flex-grow justify-content-center">
                         <form className="form-inline">
@@ -15,7 +16,7 @@ export class AppHeader extends Component {
                     </ul>
                     <ul className="nav navbar-nav flex-grow justify-content-end">
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Login</a>
+                            <Link to="/login" className="nav-link">Login</Link>
                         </li>
                     </ul>
                 </div>
