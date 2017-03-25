@@ -9,8 +9,10 @@ import {Home} from "./containers/home/home"
 import {SongSingleContainer} from './containers/songs/single'
 
 
-const Routes = (
-    <Route path="/home" component={Home}/>
+export default (
+    <div>
+        <Route exact path="/" component={Home}/>
+        <Route path="/songs/:songId" component={SongSingleContainer}/>
+    </div>
 );
 
-export default Routes;
