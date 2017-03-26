@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import {LoginForm, SignUpForm} from "../../components/login/login"
+import {LogInForm, SignUpForm} from "../../components/login/login"
 
-export default class LoginFormContainer extends Component {
+export default class LogInFormContainer extends Component {
     render() {
         return (
             <div className="container">
                 <div className="row">
-                    <LoginForm/>
+                    <LogInForm/>
                     <SignUpForm/>
                 </div>
             </div>

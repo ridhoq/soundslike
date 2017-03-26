@@ -21,14 +21,18 @@
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
     "bootswatch": "github:thomaspark/bootswatch#v4",
+    "classnames": "^2.2.5",
+    "immutability-helper": "^2.1.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-router-dom": "^4.0.0",
+    "validator": "^7.0.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.9",
+    "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "css-loader": "^0.27.3",
