@@ -111,77 +111,72 @@ export class SignUpForm extends Component {
         console.log("handled submit");
     };
 
+    formClassNames = (success, danger) => {
+        return {
+            formGroup: classNames({
+                "form-group": true,
+                "has-success": success(),
+                "has-danger": danger()
+            }),
+            formControl: classNames({
+                "form-control": true,
+                "form-control-success": success(),
+                "form-control-danger": danger()
+            })
+        };
+    };
+
     render() {
 
-        // there's gotta be a better way to do this...
-        const usernameClass = classNames({
-            "form-control": true,
-            "form-control-success": this.state.user.username,
-            "form-control-danger": this.state.validUsername !== null && this.state.validUsername === false
-        });
+        const usernameClassNames = this.formClassNames(
+            () => this.state.user.username,
+            () => this.state.validUsername !== null && this.state.validUsername === false);
 
-        const usernameGroup = classNames({
-            "form-group": true,
-            "has-success": this.state.user.username,
-            "has-danger": this.state.validUsername !== null && this.state.validUsername === false
-        });
+        const emailClassNames = this.formClassNames(
+            () => this.state.user.email,
+            () => this.state.validEmail !== null && this.state.validEmail === false);
 
-        const emailClass = classNames({
-            "form-control": true,
-            "form-control-success": this.state.user.email,
-            "form-control-danger": this.state.validEmail !== null && this.state.validEmail === false
-        });
+        const passwordClassNames = this.formClassNames(
+            () => this.state.user.password,
+            () => this.state.validPassword !== null && this.state.validPassword === false);
 
-        const emailGroup = classNames({
-            "form-group": true,
-            "has-success": this.state.user.email,
-            "has-danger": this.state.validEmail !== null && this.state.validEmail === false
-        });
-
-        const passwordClass = classNames({
-            "form-control": true,
-            "form-control-success": this.state.user.password,
-            "form-control-danger": this.state.validPassword !== null && this.state.validPassword === false
-        });
-
-        const passwordGroup = classNames({
-            "form-group": true,
-            "has-success": this.state.user.password,
-            "has-danger": this.state.validPassword !== null && this.state.validPassword === false
-        });
-
-        const confirmPasswordClass = classNames({
-            "form-control": true,
-            "form-control-success": this.state.validConfirmPassword,
-            "form-control-danger": this.state.validConfirmPassword !== null && this.state.validConfirmPassword === false
-        });
-
-        const confirmPasswordGroup = classNames({
-            "form-group": true,
-            "has-success": this.state.validConfirmPassword,
-            "has-danger": this.state.validConfirmPassword !== null && this.state.validConfirmPassword === false
-        });
+        const confirmPasswordClassNames = this.formClassNames(
+            () => this.state.validConfirmPassword,
+            () => this.state.validConfirmPassword !== null && this.state.validConfirmPassword === false
+        );
 
         return (
             <div className="col">
                 <h4>Sign Up</h4>
                 <form onSubmit={this.handleSubmit}>
-                    <div className={usernameGroup}>
+                    <div className={usernameClassNames.formGroup}>
                         <label className="form-control-label">Username</label>
-                        <input type="text" className={usernameClass} onChange={this.handleUsernameChange} placeholder="Username"/>
+                        <input type="text"
+                               className={usernameClassNames.formControl}
+                               onChange={this.handleUsernameChange}
+                               placeholder="Username"/>
                     </div>
-                    <div className={emailGroup}>
+                    <div className={emailClassNames.formGroup}>
                         <label className="form-control-label">Email</label>
-                        <input type="email" className={emailClass} onChange={this.handleEmailChange} placeholder="Email"/>
+                        <input type="email"
+                               className={emailClassNames.formControl}
+                               onChange={this.handleEmailChange}
+                               placeholder="Email"/>
                     </div>
-                    <div className={passwordGroup}>
+                    <div className={passwordClassNames.formGroup}>
                         <label className="form-control-label">Password</label>
-                        <input type="password" className={passwordClass} onChange={this.handlePasswordChange} placeholder="Password"/>
+                        <input type="password"
+                               className={passwordClassNames.formControl}
+                               onChange={this.handlePasswordChange}
+                               placeholder="Password"/>
                         <small className="form-text text-muted">Must be at least 6 characters</small>
                     </div>
-                    <div className={confirmPasswordGroup}>
+                    <div className={confirmPasswordClassNames.formGroup}>
                         <label className="form-control-label">Confirm Password</label>
-                        <input type="password" className={confirmPasswordClass} onChange={this.handleConfirmPasswordChange} placeholder="Confirm Password"/>
+                        <input type="password"
+                               className={confirmPasswordClassNames.formControl}
+                               onChange={this.handleConfirmPasswordChange}
+                               placeholder="Confirm Password"/>
                     </div>
                     <button type="submit" className="btn btn-primary">Log in</button>
                 </form>
