@@ -13,7 +13,12 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: "babel-loader"
+                loader: "babel-loader",
+                externals: {
+                  'react/addons': true,
+                  'react/lib/ExecutionEnvironment': true,
+                  'react/lib/ReactContext': true
+                }
             },
             {
                 test: /\.scss$/,
