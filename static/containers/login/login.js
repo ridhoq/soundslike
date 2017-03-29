@@ -29,7 +29,7 @@ export default class LogInFormContainer extends Component {
                 )}
                 <div className="row">
                     <LogInForm/>
-                    <SignUpForm handleSignup={this.handleSignUp} />
+                    <SignUpForm handleSignUp={this.handleSignUp} />
                 </div>
             </div>
         );
