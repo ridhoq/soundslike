@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import validator from "validator";
 import classNames from "classnames";
-import update from 'immutability-helper';;
+import update from 'immutability-helper';
 
 export class LogInForm extends Component {
     constructor(props) {
@@ -48,6 +48,7 @@ export class SignUpForm extends Component {
         };
     }
 
+    // TODO: don't allow whitespace in username
     handleUsernameChange = (e) => {
         const val = e.target.value;
         if (!validator.isEmpty(val) && validator.isAscii(val)) {
@@ -80,6 +81,7 @@ export class SignUpForm extends Component {
         }
     };
 
+    // TODO: figure out a way to have one handle method for both password and confirm password
     handlePasswordChange = (e) => {
         const val = e.target.value;
         if (!validator.isEmpty(val) && validator.isAscii(val) && val.length >= 6) {
@@ -106,9 +108,13 @@ export class SignUpForm extends Component {
         }
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
-        console.log("handled submit");
+        if (this.state.validUsername && this.state.validEmail &&
+            this.state.validPassword && this.state.validConfirmPassword) {
+            debugger;
+            this.props.handleSignUp(this.state.user);
+        }
     };
 
     formClassNames = (success, danger) => {
