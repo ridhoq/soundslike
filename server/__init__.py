@@ -24,6 +24,6 @@ def create_app(config_name):
         return app.send_static_file('index.html')
 
     # from .site import site as site_blueprint
-    # app.register_blueprint(site_blueprint, url_prefix='')
+    # server.register_blueprint(site_blueprint, url_prefix='')
 
     return app

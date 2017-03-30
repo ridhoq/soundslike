@@ -2,7 +2,7 @@ import React from "react";
 import {shallow} from "enzyme";
 import assert from "assert";
 
-import {SignUpForm} from "../../../../static/components/login/login"
+import {SignUpForm} from "../../../../client/components/login/login"
 
 describe("<SignUpForm/>", () =>  {
     it("has four form-groups", () => {

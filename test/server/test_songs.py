@@ -1,5 +1,5 @@
 from flask import url_for
-from app.models import User
+from server.models import User
 import json
 import pytest
 import base64

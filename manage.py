@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 import os
 import sys
-from app import create_app, db
+from server import create_app, db
 from flask.ext.script import Manager, Command, Option
 from flask.ext.migrate import Migrate, MigrateCommand
 
 class GunicornCommand(Command):
-    """Run the app within Gunicorn"""
+    """Run the server within Gunicorn"""
 
     def get_options(self):
         from gunicorn.config import make_settings

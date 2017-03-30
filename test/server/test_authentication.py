@@ -1,6 +1,6 @@
 from flask import url_for
 import json
-from app.models import User
+from server.models import User
 import pytest
 import base64
 

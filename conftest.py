@@ -1,5 +1,5 @@
-from app import create_app
-from app import db as _db
+from server import create_app
+from server import db as _db
 from config import TestingConfig
 
 from alembic.command import upgrade, downgrade
