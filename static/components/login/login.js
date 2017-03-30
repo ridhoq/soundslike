@@ -112,7 +112,6 @@ export class SignUpForm extends Component {
         e.preventDefault();
         if (this.state.validUsername && this.state.validEmail &&
             this.state.validPassword && this.state.validConfirmPassword) {
-            debugger;
             this.props.handleSignUp(this.state.user);
         }
     };

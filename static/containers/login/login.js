@@ -10,13 +10,15 @@ export default class LogInFormContainer extends Component {
     }
 
     handleSignUp = (user) => {
-        const response = APIHelper.signUp(user);
-        if (response && response.status == 200) {
-          return;
-        }
-        this.setState({
-          signupError: true,
-          signupErrorMessage: response ? response.error.json.message : "server error"
+        APIHelper.signUp(user).then(response => {
+            if (response && response.status == 200) {
+                return;
+            }
+
+            this.setState({
+                signupError: true,
+                signupErrorMessage: response ? response.json.message : "server error"
+            });
         });
     };
 
@@ -24,7 +26,7 @@ export default class LogInFormContainer extends Component {
         return (
             <div className="container">
                 {this.state.signupError && (
-                    <Alert alertType="error" alertMessage={this.state.signupErrorMessage}/>
+                    <Alert alertType="danger" alertMessage={this.state.signupErrorMessage}/>
                 )}
                 <div className="row">
                     <LogInForm/>
