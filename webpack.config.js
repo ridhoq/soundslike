@@ -13,12 +13,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: "babel-loader",
-                externals: {
-                  'react/addons': true,
-                  'react/lib/ExecutionEnvironment': true,
-                  'react/lib/ReactContext': true
-                }
+                loader: "babel-loader"
             },
             {
                 test: /\.scss$/,
@@ -34,5 +29,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'soundslike',
         })
-    ]
+    ],
+    externals: {
+        'react/addons': true,
+        'react/lib/ExecutionEnvironment': true,
+        'react/lib/ReactContext': true
+    }
 };
