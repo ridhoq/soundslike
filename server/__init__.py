@@ -23,7 +23,4 @@ def create_app(config_name):
     def catch_all(path):
         return app.send_static_file('index.html')
 
-    # from .site import site as site_blueprint
-    # server.register_blueprint(site_blueprint, url_prefix='')
-
     return app
