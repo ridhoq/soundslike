@@ -99,5 +99,8 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
+# IntelliJ
+.idea
+
 server/static
 
