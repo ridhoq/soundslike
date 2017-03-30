@@ -4,8 +4,8 @@ import {
     Link
 } from "react-router-dom"
 
-import {App} from "./containers/app/app"
-import {Home} from "./containers/home/home"
+import {App} from "./containers/app"
+import {Home} from "./containers/home"
 import {SongSingleContainer} from './containers/songs/single'
 
 

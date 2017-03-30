@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {LogInForm, SignUpForm} from "../../components/login/login"
-import Alert from "../../components/alert/alert"
-import APIHelper from "../../middleware/apihelper"
+import {LogInForm, SignUpForm} from "../components/login"
+import Alert from "../components/alert"
+import APIHelper from "../utils/apihelper"
 
 export default class LogInFormContainer extends Component {
     constructor(props) {

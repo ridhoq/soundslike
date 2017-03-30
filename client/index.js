@@ -3,9 +3,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 
-import App from "./containers/app/app"
-import Home from "./containers/home/home"
-import LoginFormContainer from "./containers/login/login"
+import App from "./containers/app"
+import Home from "./containers/home"
+import LoginFormContainer from "./containers/login"
 import SongSingleContainer from './containers/songs/single'
 
 const mount = document.createElement("div");
