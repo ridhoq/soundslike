@@ -3,26 +3,21 @@ import React, {Component} from "react";
 export default class Alert extends Component {
     constructor(props) {
         super(props);
-        this.state = {visible: true};
 
     }
-
-    handleClose = (e) => {
-        e.preventDefault();
-        this.setState({visible: false});
-    };
 
     render() {
-        if (this.state.visible) {
-            return (
-                <div className={"alert alert-" + this.props.alertType + " alert-dismissible"}>
-                    <button type="button" className="close" onClick={this.handleClose} />
-                    {this.props.alertMessage}
-                </div>
-            );
-        }
-        else {
-            return null;
-        }
+        return (
+            <div className={"alert alert-" + this.props.alertType + " alert-dismissible"} role="alert">
+                <button type="button" className="close" onClick={this.props.handleClose} aria-label="Close"/>
+                {this.props.alertMessage}
+            </div>
+        );
     }
+
+    propTypes = {
+        alertMessage: React.PropTypes.string.isRequired,
+        handleClose: React.PropTypes.func.isRequired
+    };
 }
+

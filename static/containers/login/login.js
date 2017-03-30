@@ -6,7 +6,7 @@ import APIHelper from "../../middleware/apihelper"
 export default class LogInFormContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = {signupError: false};
+        this.state = {signUpError: false};
     }
 
     handleSignUp = (user) => {
@@ -16,17 +16,26 @@ export default class LogInFormContainer extends Component {
             }
 
             this.setState({
-                signupError: true,
-                signupErrorMessage: response ? response.json.message : "server error"
+                signUpError: true,
+                signUpErrorMessage: response ? response.json.message : "server error"
             });
         });
+    };
+
+    handleDangerAlertClose = (e) => {
+        e.preventDefault();
+        this.setState({signUpError: false});
     };
 
     render() {
         return (
             <div className="container">
-                {this.state.signupError && (
-                    <Alert alertType="danger" alertMessage={this.state.signupErrorMessage}/>
+                {this.state.signUpError && (
+                    <Alert
+                        alertType="danger"
+                        alertMessage={this.state.signUpErrorMessage}
+                        handleClose={this.handleDangerAlertClose}
+                    />
                 )}
                 <div className="row">
                     <LogInForm/>
