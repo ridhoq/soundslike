@@ -154,31 +154,35 @@ export class SignUpForm extends Component {
             <div className="col">
                 <h4>Sign Up</h4>
                 <form onSubmit={this.handleSubmit}>
-                    <div className={usernameClassNames.formGroup}>
+                    <div id="usernameFormGroup" className={usernameClassNames.formGroup}>
                         <label className="form-control-label">Username</label>
                         <input type="text"
+                               id="usernameInput"
                                className={usernameClassNames.formControl}
                                onChange={this.handleUsernameChange}
                                placeholder="Username"/>
                     </div>
-                    <div className={emailClassNames.formGroup}>
+                    <div id="emailFormGroup" className={emailClassNames.formGroup}>
                         <label className="form-control-label">Email</label>
                         <input type="email"
+                               id="emailInput"
                                className={emailClassNames.formControl}
                                onChange={this.handleEmailChange}
                                placeholder="Email"/>
                     </div>
-                    <div className={passwordClassNames.formGroup}>
+                    <div id="passwordFormGroup" className={passwordClassNames.formGroup}>
                         <label className="form-control-label">Password</label>
                         <input type="password"
+                               id="passwordInput"
                                className={passwordClassNames.formControl}
                                onChange={this.handlePasswordChange}
                                placeholder="Password"/>
                         <small className="form-text text-muted">Must be at least 6 characters</small>
                     </div>
-                    <div className={confirmPasswordClassNames.formGroup}>
+                    <div id="confirmPasswordFormGroup" className={confirmPasswordClassNames.formGroup}>
                         <label className="form-control-label">Confirm Password</label>
                         <input type="password"
+                               id="confirmPasswordInput"
                                className={confirmPasswordClassNames.formControl}
                                onChange={this.handleConfirmPasswordChange}
                                placeholder="Confirm Password"/>
