@@ -32,6 +32,7 @@ export default class LogInFormContainer extends Component {
             <div className="container">
                 {this.state.signUpError && (
                     <Alert
+                        id="signUpErrorAlert"
                         alertType="danger"
                         alertMessage={this.state.signUpErrorMessage}
                         handleClose={this.handleDangerAlertClose}

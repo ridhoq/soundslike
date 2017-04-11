@@ -187,7 +187,7 @@ export class SignUpForm extends Component {
                                onChange={this.handleConfirmPasswordChange}
                                placeholder="Confirm Password"/>
                     </div>
-                    <button type="submit" className="btn btn-primary">Log in</button>
+                    <button id="signUpSubmit" type="submit" className="btn btn-primary">Log in</button>
                 </form>
             </div>
         );

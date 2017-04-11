@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive",
+    "test": "mocha --compilers js:babel-core/register --require test/client-setup.js --recursive",
     "build": "webpack -p",
     "dev": "webpack-dev-server",
     "postinstall": "webpack -p"
@@ -44,7 +44,9 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "enzyme": "^2.8.0",
+    "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
-    "react-addons-test-utils": "^15.4.2"
+    "react-addons-test-utils": "^15.4.2",
+    "sinon": "^2.1.0"
   }
 }
