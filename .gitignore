@@ -101,6 +101,7 @@ jspm_packages
 
 # IntelliJ
 .idea
+.pycharm-bash
 
 server/static
 
