@@ -153,7 +153,7 @@ export class SignUpForm extends Component {
         return (
             <div className="col">
                 <h4>Sign Up</h4>
-                <form onSubmit={this.handleSubmit}>
+                <form id="signUpForm" onSubmit={this.handleSubmit}>
                     <div id="usernameFormGroup" className={usernameClassNames.formGroup}>
                         <label className="form-control-label">Username</label>
                         <input type="text"

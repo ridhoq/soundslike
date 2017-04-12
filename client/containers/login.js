@@ -11,7 +11,7 @@ export default class LogInFormContainer extends Component {
 
     handleSignUp = (user) => {
         APIHelper.signUp(user).then(response => {
-            if (response && response.status == 200) {
+            if (response && response.status === 200) {
                 return;
             }
 
