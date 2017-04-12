@@ -22,7 +22,7 @@ describe("<LogInFormContainer/>", () => {
             }
         );
 
-        const wrapper = mount(<LogInFormContainer apiHelper={APIHelper}/>);
+        const wrapper = mount(<LogInFormContainer/>);
         wrapper.find("#usernameInput").simulate("change", {target: {value: "corn-row-kenny"}});
         wrapper.find("#emailInput").simulate("change", {target: {value: "klamar@tde.com"}});
         wrapper.find("#passwordInput").simulate("change", {target: {value: "behumble"}});
