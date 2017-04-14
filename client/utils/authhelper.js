@@ -1,6 +1,4 @@
 
-const TOKEN_KEY = "soundslike-user-token";
-
 export default class AuthHelper {
 
     // localForage must already be initialized
@@ -10,5 +8,10 @@ export default class AuthHelper {
         }
 
         this.localforage = localforage;
+        this.tokenKey = "soundslike-user-token";
+    }
+
+    logIn(token) {
+        this.localforage.setItem(this.tokenKey, token);
     }
 }

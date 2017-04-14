@@ -16,5 +16,21 @@ describe("AuthHelper", () => {
         const ah = new AuthHelper(localforage.createInstance({name: "soundslike-test"}));
         assert.isOk(ah.localforage);
     });
+
+    it("should save a user's token when logIn is called", () => {
+        const myLF = localforage.createInstance({name: "soundslike-test"});
+        const ah = new AuthHelper(myLF);
+
+        const token = "issa-token";
+        ah.logIn(token);
+
+        myLF.getItem(ah.tokenKey).then((item) => {
+            assert.equal(item, token);
+        });
+    });
+
+    after(() => {
+        global.window.localStorage._deleteLocation();
+    })
 });
 
