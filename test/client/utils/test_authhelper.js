@@ -29,7 +29,7 @@ describe("AuthHelper", () => {
         });
     });
 
-    it("should check user's logged in status", () => {
+    it("should check user's logged in status when logOut is called", () => {
         const myLF = localforage.createInstance({name: "soundslike-test-2"});
         const ah = new AuthHelper(myLF);
         const token = "issa-token";
@@ -43,6 +43,25 @@ describe("AuthHelper", () => {
             console.log(err);
             assert.isOk(false);
         });
+    });
+
+    it("should delete a user's token when logOut is called", () => {
+        const myLF = localforage.createInstance({name: "soundslike-test-3"});
+        const ah = new AuthHelper(myLF);
+        const token = "issa-token";
+
+        return ah.isLoggedIn()
+            .then((token) => assert.isNotOk(token))
+            .then(() => ah.logIn(token))
+            .then(() => ah.isLoggedIn())
+            .then((token) => assert.isOk(token))
+            .then(() => ah.logOut())
+            .then(() => ah.isLoggedIn())
+            .then((token) => assert.isNotOk(token))
+            .catch((err) => {
+                console.log(err);
+                assert.isOk(false);
+            });
     });
 
     after(() => {

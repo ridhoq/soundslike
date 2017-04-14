@@ -18,4 +18,8 @@ export default class AuthHelper {
     isLoggedIn() {
         return this.localforage.getItem(this.tokenKey);
     }
+
+    logOut() {
+        return this.localforage.removeItem(this.tokenKey);
+    }
 }
