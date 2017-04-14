@@ -12,6 +12,10 @@ export default class AuthHelper {
     }
 
     logIn(token) {
-        this.localforage.setItem(this.tokenKey, token);
+        return this.localforage.setItem(this.tokenKey, token);
+    }
+
+    isLoggedIn() {
+        return this.localforage.getItem(this.tokenKey);
     }
 }
