@@ -31,8 +31,8 @@ describe("<LogInFormContainer/>", () => {
 
         setTimeout(() => {
             assert.isOk(apiHelperStub.calledOnce);
-            assert.isOk(wrapper.state().signUpError);
-            assert.equal(wrapper.state().signUpErrorMessage, signUpErrorMessage);
+            assert.isOk(wrapper.state().error);
+            assert.equal(wrapper.state().errorMessage, signUpErrorMessage);
             assert.isOk(wrapper.find("#signUpErrorAlert"));
             apiHelperStub.restore();
             done();

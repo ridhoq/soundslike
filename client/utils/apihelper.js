@@ -1,7 +1,4 @@
 export default function APIHelper() {
-    this.logIn = function () {
-        // todo
-    }
 }
 
 APIHelper.checkStatus = function (response) {
@@ -47,3 +44,20 @@ APIHelper.signUp = function (data) {
         }
     });
 };
+
+APIHelper.logIn = function (data) {
+    const authHeader = "Basic " + b64EncodeUnicode(data.username + ":" + data.password);
+    return APIHelper.fetchJSON("/api/token/", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": authHeader
+        }
+    });
+};
+
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+    }));
+}

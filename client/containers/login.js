@@ -1,40 +1,58 @@
 import React, {Component} from "react";
+import {withRouter} from "react-router-dom"
 import {LogInForm, SignUpForm} from "../components/login"
 import Alert from "../components/alert"
 import APIHelper from "../utils/apihelper"
+import AuthHelper from "../utils/authhelper"
 
-export default class LogInFormContainer extends Component {
+class LogInFormContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = {signUpError: false};
+        this.state = {error: false};
     }
 
     handleSignUp = (user) => {
         APIHelper.signUp(user).then(response => {
             if (response && response.status === 200) {
-                return;
+                APIHelper.logIn(user).then(response => {
+                    if (response && response.status === 200) {
+                        console.log(response);
+                        const tokenObj = response.json;
+                        tokenObj.username = user.username;
+                        this.props.authHelper.logIn(tokenObj).then(() => {
+                            this.props.history.push("/");
+                        });
+                    }
+                    else {
+                        this.setState({
+                            error: true,
+                            errorMessage: response ? response.json.message : "server error"
+                        });
+                    }
+                });
             }
-
-            this.setState({
-                signUpError: true,
-                signUpErrorMessage: response ? response.json.message : "server error"
-            });
+            else {
+                this.setState({
+                    error: true,
+                    errorMessage: response ? response.json.message : "server error"
+                });
+            }
         });
     };
 
     handleDangerAlertClose = (e) => {
         e.preventDefault();
-        this.setState({signUpError: false});
+        this.setState({error: false});
     };
 
     render() {
         return (
             <div className="container">
-                {this.state.signUpError && (
+                {this.state.error && (
                     <Alert
                         id="signUpErrorAlert"
                         alertType="danger"
-                        alertMessage={this.state.signUpErrorMessage}
+                        alertMessage={this.state.errorMessage}
                         handleClose={this.handleDangerAlertClose}
                     />
                 )}
@@ -46,3 +64,5 @@ export default class LogInFormContainer extends Component {
         );
     }
 }
+
+export default withRouter(LogInFormContainer);
