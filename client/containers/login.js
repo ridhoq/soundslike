@@ -14,21 +14,25 @@ class LogInFormContainer extends Component {
     handleSignUp = (user) => {
         APIHelper.signUp(user).then(response => {
             if (response && response.status === 200) {
-                APIHelper.logIn(user).then(response => {
-                    if (response && response.status === 200) {
-                        console.log(response);
-                        const tokenObj = response.json;
-                        tokenObj.username = user.username;
-                        this.props.authHelper.logIn(tokenObj).then(() => {
-                            this.props.history.push("/");
-                        });
-                    }
-                    else {
-                        this.setState({
-                            error: true,
-                            errorMessage: response ? response.json.message : "server error"
-                        });
-                    }
+                this.handleLogIn(user);
+            }
+            else {
+                this.setState({
+                    error: true,
+                    errorMessage: response ? response.json.message : "server error"
+                });
+            }
+        });
+    };
+
+    handleLogIn = (user) => {
+        APIHelper.logIn(user).then(response => {
+            if (response && response.status === 200) {
+                console.log(response);
+                const tokenObj = response.json;
+                tokenObj.username = user.username;
+                this.props.authHelper.logIn(tokenObj).then(() => {
+                    this.props.history.push("/");
                 });
             }
             else {
@@ -57,7 +61,7 @@ class LogInFormContainer extends Component {
                     />
                 )}
                 <div className="row">
-                    <LogInForm/>
+                    <LogInForm handleLogIn={this.handleLogIn} />
                     <SignUpForm handleSignUp={this.handleSignUp} />
                 </div>
             </div>

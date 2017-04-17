@@ -7,27 +7,92 @@ export class LogInForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {}
+            user: {},
+            validUsername: null,
+            validPassword: null
         };
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
-        console.log("handled submit");
-    }
+        if (this.state.validUsername && this.state.validPassword) {
+            this.props.handleLogIn(this.state.user);
+        }
+    };
+
+    handleUsernameChange = (e) => {
+        const val = e.target.value;
+        if (!validator.isEmpty(val) && validator.isAscii(val)) {
+            this.setState({
+                validUsername: true,
+                user: update(this.state.user, {username: {$set: val}})
+            });
+        }
+        else {
+            this.setState({
+                validUsername: false,
+                user: update(this.state.user, {username: {$set: null}})
+            });
+        }
+    };
+
+    handlePasswordChange = (e) => {
+        const val = e.target.value;
+        if (!validator.isEmpty(val) && validator.isAscii(val) && val.length >= 6) {
+            this.setState({
+                validPassword: true,
+                user: update(this.state.user, {password: {$set: val}})
+            });
+        }
+        else {
+            this.setState({
+                validPassword: false,
+                user: update(this.state.user, {password: {$set: null}})
+            });
+        }
+    };
+
+    formClassNames = (success, danger) => {
+        return {
+            formGroup: classNames({
+                "form-group": true,
+                "has-success": success(),
+                "has-danger": danger()
+            }),
+            formControl: classNames({
+                "form-control": true,
+                "form-control-success": success(),
+                "form-control-danger": danger()
+            })
+        };
+    };
 
     render() {
+        const usernameClassNames = this.formClassNames(
+            () => this.state.user.username,
+            () => this.state.validUsername !== null && this.state.validUsername === false);
+
+        const passwordClassNames = this.formClassNames(
+            () => this.state.user.password,
+            () => this.state.validPassword !== null && this.state.validPassword === false);
+
         return (
             <div className="col">
                 <h4>Log In</h4>
                 <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
+                    <div className={usernameClassNames.formGroup}>
                         <label>Username/Email</label>
-                        <input type="email" className="form-control" placeholder="Username/Email"/>
+                        <input type="text"
+                               className={usernameClassNames.formControl}
+                               onChange={this.handleUsernameChange}
+                               placeholder="Username/Email"/>
                     </div>
-                    <div className="form-group">
+                    <div className={passwordClassNames.formGroup}>
                         <label>Password</label>
-                        <input type="password" className="form-control" placeholder="Password"/>
+                        <input type="password"
+                               className={passwordClassNames.formControl}
+                               onChange={this.handlePasswordChange}
+                               placeholder="Password"/>
                     </div>
                     <button type="submit" className="btn btn-primary">Log In</button>
                 </form>
