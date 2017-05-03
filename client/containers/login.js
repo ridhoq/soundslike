@@ -31,6 +31,7 @@ class LogInFormContainer extends Component {
                 console.log(response);
                 const tokenObj = response.json;
                 tokenObj.username = user.username;
+                // TODO: emit action to redux store
                 this.props.authHelper.logIn(tokenObj).then(() => {
                     this.props.history.push("/");
                 });
