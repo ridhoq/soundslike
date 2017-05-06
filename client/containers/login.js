@@ -1,11 +1,13 @@
 import React, {Component} from "react";
-import {withRouter} from "react-router-dom"
-import {LogInForm, SignUpForm} from "../components/login"
-import Alert from "../components/alert"
-import APIHelper from "../utils/apihelper"
-import AuthHelper from "../utils/authhelper"
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
-class LogInFormContainer extends Component {
+import {LogInForm, SignUpForm} from "../components/login";
+import Alert from "../components/alert";
+import APIHelper from "../utils/apihelper";
+import {logIn} from "../actions";
+
+class UnconnectedLogInFormContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {error: false};
@@ -29,12 +31,10 @@ class LogInFormContainer extends Component {
         APIHelper.logIn(user).then(response => {
             if (response && response.status === 200) {
                 console.log(response);
-                const tokenObj = response.json;
-                tokenObj.username = user.username;
-                // TODO: emit action to redux store
-                this.props.authHelper.logIn(tokenObj).then(() => {
-                    this.props.history.push("/");
-                });
+                delete user.password;
+                const userWithToken = Object.assign(user, response.json);
+                this.props.logInDispatch(userWithToken);
+                this.props.history.push("/");
             }
             else {
                 this.setState({
@@ -70,4 +70,17 @@ class LogInFormContainer extends Component {
     }
 }
 
-export default withRouter(LogInFormContainer);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logInDispatch: (user) => {
+            dispatch(logIn(user))
+        }
+    };
+};
+
+const LogInContainer = withRouter(connect(
+    null,
+    mapDispatchToProps
+)(UnconnectedLogInFormContainer));
+
+export default LogInContainer;

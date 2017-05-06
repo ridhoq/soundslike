@@ -1,28 +1,42 @@
 import "./scss/styles.scss"
 import React from "react";
 import ReactDOM from "react-dom";
-import {BrowserRouter as Router, Route, withRouter} from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import localforage from "localforage";
 import createHistory from 'history/createBrowserHistory';
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+import throttle from "lodash/throttle";
 
-import App from "./containers/app"
-import Home from "./containers/home"
-import LogInFormContainer from "./containers/login"
-import SongSingleContainer from './containers/songs/single'
-import AuthHelper from "./utils/authhelper"
+import App from "./containers/app";
+import Home from "./containers/home";
+import LogInFormContainer from "./containers/login";
+import SongSingleContainer from './containers/songs/single';
+import {loadState, saveState} from "./utils/localstorage";
+import soundsLikeReducer from "./reducers";
 
 const mount = document.createElement("div");
-const authHelper = new AuthHelper(localforage.createInstance({name: "soundslike"}));
+const localForageInstance = localforage.createInstance({name: "soundslike"});
+const persistedState = loadState(localForageInstance);
+const store = createStore(soundsLikeReducer, persistedState);
 const history = createHistory();
 
+store.subscribe(throttle(() => {
+    saveState(localForageInstance, {
+        auth: store.getState().auth
+    });
+}, 1000));
+
 const Index = () => (
-    <Router history={history}>
-        <App authHelper={authHelper}>
-            <Route exact path="/" component={Home}/>
-            <Route path="/login" render={() => <LogInFormContainer authHelper={authHelper}/>}/>
-            <Route path="/songs/:songId" component={SongSingleContainer}/>
-        </App>
-    </Router>
+    <Provider store={store}>
+        <Router history={history}>
+            <App>
+                <Route exact path="/" component={Home}/>
+                <Route path="/login" component={LogInFormContainer}/>
+                <Route path="/songs/:songId" component={SongSingleContainer}/>
+            </App>
+        </Router>
+    </Provider>
 );
 
 ReactDOM.render(<Index/>, mount);
