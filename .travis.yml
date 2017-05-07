@@ -10,7 +10,7 @@ deploy:
   app:
     develop: soundslike-staging
   on:
-    repo: soundslike/soundslike-server
+    repo: soundslike/soundslike
 services:
   - postgresql
 before_script:
