@@ -1,7 +1,79 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {NavDropdown, DropdownToggle, DropdownItem, DropdownMenu} from "reactstrap";
 
-export class AppHeader extends Component {
+import {logOut} from "../actions";
+
+class UserControl extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {dropdownOpen: false};
+    }
+
+    toggle = () => {
+        this.setState({
+            dropdownOpen: !this.state.dropdownOpen
+        });
+    }
+
+    render() {
+        return (
+            <NavDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                <DropdownToggle nav caret>
+                    {this.props.user.username}
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem onClick={this.props.dispatchLogOut}>Log Out</DropdownItem>
+                </DropdownMenu>
+            </NavDropdown>
+        );
+    }
+}
+
+class LogInControl extends Component {
+    render() {
+        return (
+            <li className="nav-item">
+                <Link to="/login" className="nav-link">Login</Link>
+            </li>
+        );
+    }
+}
+
+class UnconnectedAuthControl extends Component {
+    render() {
+        let component = null;
+        if (this.props.user) {
+            component = <UserControl user={this.props.user} dispatchLogOut={this.props.dispatchLogOut}/>;
+        }
+        else {
+            component = <LogInControl />;
+        }
+        return component;
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.auth.user
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatchLogOut: () => {
+            dispatch(logOut());
+        }
+    };
+};
+
+const AuthControl = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(UnconnectedAuthControl);
+
+class AppHeader extends Component {
     render() {
         return (
             <nav className="navbar navbar-toggleable-md navbar-inverse bg-primary main-nav">
@@ -15,9 +87,7 @@ export class AppHeader extends Component {
                         </form>
                     </ul>
                     <ul className="nav navbar-nav flex-grow justify-content-end">
-                        <li className="nav-item">
-                            <Link to="/login" className="nav-link">Login</Link>
-                        </li>
+                        <AuthControl/>
                     </ul>
                 </div>
             </nav>
