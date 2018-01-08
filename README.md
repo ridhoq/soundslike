@@ -1,5 +1,5 @@
-# soundslike-server
-API server for soundslike written in flask
+# soundslike
+Enable users to discover music by traversing a music relationship graph that is built by other users. Target audience are users who are looking to actively curate music by building the graph or consuming the graph.
 
 ## Setup
 You'll need python 3, pip, postgresql, and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/index.html)
