@@ -10,7 +10,7 @@ First. for the sake of this, im going to use soundslike.com as the url, however 
 run 'GET' http://soundslike.com/api/token with a username and password with basic AUTH  
 
 this will return a response of...
-```javascript
+```json
         {
         "expiration": 3000,
         "token": "token_string"
@@ -25,7 +25,7 @@ you'll need to Base64 encode the bearer token provided earlier and include it in
 run 'POST' http://soundslike.com/api/users/
 
 with a application/json body of...
-```javascript
+```json
         {
             "username" : "test", 
             "email" : "test@gmail.com", 
@@ -33,7 +33,7 @@ with a application/json body of...
         }
 ``` 
 and this will return a response of... 
-```javascript
+```json
         {
         "email": "test@gmail.com",
         "member_since": "Fri, 07 Dec 2018 06:19:28 GMT",
@@ -43,7 +43,7 @@ and this will return a response of...
 ### getting a user 
 
 run 'GET' http://soundslike.com/api/users/method_man with no body and this will return a response of...
-```javascript
+```json
         {
         "email": "method_man@wutang.com",
         "member_since": "Fri, 07 Dec 2018 06:19:28 GMT",
@@ -57,7 +57,7 @@ NOTE: the email field is not guranteed unless you're accessing your own profile
 ### getting a song
 
 run 'GET' http://soundslike.com/api/songs/2 with no body and this will return a response of...
-```javascript
+```json
         {
         "artist": "Wartime Afternoon",
         "created": "Thu, 06 Dec 2018 04:18:33 GMT",
@@ -75,7 +75,7 @@ run 'GET' http://soundslike.com/api/songs/2 with no body and this will return a 
 ### posting a song
 
 run 'POST' http://soundslike.com/api/songs/ with a body of 
-```javascript
+```json
         {
             "title" : "Feel It Still",
             "artist" : "Portugal, The Man",
@@ -83,7 +83,7 @@ run 'POST' http://soundslike.com/api/songs/ with a body of
         }
 ``` 
 and this will return a response of...
-```javascript
+```json
         {
         "artist": "Portugal, The Man",
         "created": "Thu, 06 Dec 2018 04:25:37 GMT",
@@ -105,7 +105,7 @@ and this will return a response of...
 (this will surely be changed in the future, we will update then)
 
 run 'GET' http://soundslike.com/api/songs/2/related with no body and this will return a response of an array of songs and their votes
-```javascript
+```json
         [
         {
             "artist": "Portugal, The Man",
@@ -122,14 +122,14 @@ run 'GET' http://soundslike.com/api/songs/2/related with no body and this will r
 ### creating a new song relation 
 
 run 'POST' http://soundslike.com/api/song_relations/ with a body of...
-```javascript
+```json
         {
             "song1_id" : "3",
             "song2_id" : "2"
         }
 ``` 
 and get a response of..
-```javascript
+```json
         {
         "created": "Sat, 08 Dec 2018 01:45:13 GMT",
         "created_by": {
@@ -172,7 +172,7 @@ and get a response of..
 run 'POST' https://soundslike.com/song_relations/2/vote
 
 then you get a a response of 
-```javascript
+```json
         {
         "created": "Thu, 06 Dec 2018 04:29:39 GMT",
         "created_by": {
@@ -213,7 +213,7 @@ then you get a a response of
 ### you can also delete song votes 
 
 run 'DELETE' https://soundslike.com/song_relations/2/vote
-```javascript
+```json
         {
         "created": "Sat, 08 Dec 2018 01:45:13 GMT",
         "created_by": {
