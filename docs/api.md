@@ -1,48 +1,55 @@
 # soundslike - API documentation
 Learn how to use the soundslike API!
 
-First. for the sake of this, im going to use soundslike.com as the url, however localhost:8888 might be the url if you're using docker 
+## Authentication 
 
-## Section 1. Authentication 
+### `GET /api/token` 
 
-### Getting auth token from api
+This requires a username and password with Basic HTTP Authentication 
 
-run 'GET' http://soundslike.com/api/token with a username and password with basic AUTH  
-
-this will return a response of...
+Response:
 ```json
     {
         "expiration": 3000,
         "token": "token_string"
     }
 ``` 
-you'll need to Base64 encode the bearer token provided earlier and include it in all API requests, except user creation 
 
-## Section 2. Users 
+For all API requests that require authentication, you need to use the `token` with these steps
 
-### creating a new user 
+1.The `token` must be passed in the Authorization header
 
-run 'POST' http://soundslike.com/api/users/
+2.The `token` must be prepended with Basic (including space)
 
-with a application/json body of...
+3.The `token` must be base64 encoded with the colon appended to it
+
+## Users 
+
+### `POST /api/users/`
+
+This creates a new user.
+
+Body:
 ```json
 {
-    "username" : "test", 
-    "email" : "test@gmail.com", 
-    "password": "test"
+    "username" : "method_man", 
+    "email" : "method_man@wutang.clan", 
+    "password": "cashruleseverythingaroundme"
 }
 ``` 
-and this will return a response of... 
+Response:
 ```json
 {
-    "email": "test@gmail.com",
+    "email": "ethod_man@wutang.clan",
     "member_since": "Fri, 07 Dec 2018 06:19:28 GMT",
-    "username": "test"
+    "username": "method_man"
 }
 ``` 
-### getting a user 
+### `GET /api/users/<username>` 
 
-run 'GET' http://soundslike.com/api/users/method_man with no body and this will return a response of...
+EX. /api/users/method_man
+
+Response:
 ```json
 {
     "email": "method_man@wutang.com",
@@ -50,13 +57,15 @@ run 'GET' http://soundslike.com/api/users/method_man with no body and this will 
     "username": "method_man"
 }
 ``` 
-NOTE: the email field is not guranteed unless you're accessing your own profile
+_NOTE: the email field is only available when requesting your own user_
 
-## Section 3. Songs 
+## Songs 
 
-### getting a song
+### `GET /api/songs/<song_id>`
 
-run 'GET' http://soundslike.com/api/songs/2 with no body and this will return a response of...
+EX. /api/songs/2
+
+Response:
 ```json
 {
   "artist": "Wartime Afternoon",
@@ -72,9 +81,11 @@ run 'GET' http://soundslike.com/api/songs/2 with no body and this will return a 
 }
 ``` 
 
-### posting a song
+### `POST /api/songs/`
 
-run 'POST' http://soundslike.com/api/songs/ with a body of 
+This creates a new song. 
+
+Body:
 ```json
 {
     "title" : "Feel It Still",
@@ -82,7 +93,7 @@ run 'POST' http://soundslike.com/api/songs/ with a body of
     "url" : "https://www.youtube.com/watch?v=pBkHHoOIIn8"
 }
 ``` 
-and this will return a response of...
+Response:
 ```json
 {
   "artist": "Portugal, The Man",
@@ -98,13 +109,11 @@ and this will return a response of...
 }
 ``` 
 
-## Section 4. Song Relations
+## Song Relations
 
-### getting a song relation
+### `GET /api/songs/<song_id>/related`
 
-(this will surely be changed in the future, we will update then)
-
-run 'GET' http://soundslike.com/api/songs/2/related with no body and this will return a response of an array of songs and their votes
+Response:
 ```json
 [
   {
@@ -119,16 +128,16 @@ run 'GET' http://soundslike.com/api/songs/2/related with no body and this will r
 ]
 ``` 
 
-### creating a new song relation 
+### `POST /api/song_relations/`
 
-run 'POST' http://soundslike.com/api/song_relations/ with a body of...
+Body:
 ```json
 {
     "song1_id" : "3",
     "song2_id" : "2"
 }
 ``` 
-and get a response of..
+Response:
 ```json
 {
   "created": "Sat, 08 Dec 2018 01:45:13 GMT",
@@ -167,11 +176,9 @@ and get a response of..
 }
 ``` 
 
-### voting on a song
+### `POST /api/song_relations/<song_relation_id>/vote`
 
-run 'POST' https://soundslike.com/song_relations/2/vote
-
-then you get a a response of 
+Response:
 ```json
 {
   "created": "Thu, 06 Dec 2018 04:29:39 GMT",
@@ -210,9 +217,9 @@ then you get a a response of
 }
 ``` 
 
-### you can also delete song votes 
+### `DELETE /api/song_relations/<song_relation_id>/vote`
 
-run 'DELETE' https://soundslike.com/song_relations/2/vote
+Response:
 ```json
 {
   "created": "Sat, 08 Dec 2018 01:45:13 GMT",
@@ -250,4 +257,4 @@ run 'DELETE' https://soundslike.com/song_relations/2/vote
   "vote_count": 0
 }
 ``` 
-there will be one fewer vote
+_NOTE: There will be one fewer vote_
