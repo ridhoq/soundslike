@@ -105,3 +105,4 @@ jspm_packages
 
 server/static
 
+.DS_Store

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require test/client-setup.js --recursive",
     "build": "webpack -p",
-    "dev": "webpack-dev-server",
+    "dev": "webpack --watch --progress",
     "postinstall": "webpack -p"
   },
   "repository": {
