@@ -3,7 +3,7 @@ Learn how to use the soundslike API!
 
 ## Authentication 
 
-### `GET /api/token` 
+### `POST /api/token` 
 
 This requires a username and password with Basic HTTP Authentication 
 

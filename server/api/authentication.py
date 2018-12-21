@@ -21,7 +21,7 @@ def verify_password(username_or_token, password):
 def auth_error():
     return unauthorized('Invalid credentials')
 
-@api.route('/token/')
+@api.route('/token', methods=['POST'])
 @auth.login_required
 def get_token():
     if g.token_used:
