@@ -46,7 +46,7 @@ class Song(db.Model):
         if top is None:
             top = 10
         query_str = '''
-            select rel.id, rel.title, rel.url, rel.artist, rel.created, rel.user_id, count(srv) as vote_count
+            select rel.id, rel.title, rel.url, rel.artist, rel.created, rel.user_id, count(srv) as vote_count, srv.song_relation_id
             from songs as s
             join song_relations as sr
                 on s.id = sr.song1_id
@@ -57,7 +57,7 @@ class Song(db.Model):
                 on (rel.id = sr.song1_id and rel.id <> sr.song2_id)
                 or (rel.id = sr.song2_id and rel.id <> sr.song1_id)
             where s.id = {0} and rel.id <> {0}
-            group by rel.id, rel.title, rel.url, rel.artist, rel.created, rel.user_id
+            group by rel.id, rel.title, rel.url, rel.artist, rel.created, rel.user_id, srv.song_relation_id
             order by vote_count desc
             limit {1}
         '''.format(self.id, top)
