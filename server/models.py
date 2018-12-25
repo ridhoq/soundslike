@@ -41,7 +41,7 @@ class Song(db.Model):
 
         return json_song
 
-    def get_related_songs_json(self, top=None):
+    def get_related_songs(self, top=None):
         # default to pulling top 10 results
         if top is None:
             top = 10
@@ -62,7 +62,14 @@ class Song(db.Model):
             limit {1}
         '''.format(self.id, top)
         result = db.session.execute(query_str).fetchall()
-        json = [dict(r) for r in result]
+        return result
+
+    def get_related_songs_json(self, top=None):
+        result = self.get_related_songs(top)
+        json = {
+            'song' : self.to_json(),
+            'related_songs' : [dict(r) for r in result]
+        }
         return json
 
 
