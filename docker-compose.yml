@@ -6,7 +6,8 @@ x-app: &app
     dockerfile: Dockerfile
   environment:
     FLASK_CONFIG: development
-    DEV_DATABASE_URL: postgres://postgres:soundslike_password@db:5432/postgres
+    DEV_DATABASE_URL: postgres://soundslike_dev:soundslike_dev@db:5432/soundslike_dev
+    TEST_DATABASE_URL: postgres://soundslike_test:soundslike_test@db:5432/soundslike_test
 services:
   app:
     <<: *app
@@ -33,6 +34,8 @@ services:
     restart: always
     ports:
       - "5432:5432"
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: pg_isready -U postgres
       interval: 10s
