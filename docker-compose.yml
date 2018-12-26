@@ -30,6 +30,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  test:
+    <<: *app
+    command: bash -c "make test"
+    depends_on:
+      migrate_db:
+        condition: service_started
+      db:
+        condition: service_healthy
   db:
     image: postgres
     restart: always
