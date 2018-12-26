@@ -12,7 +12,7 @@ class TestAuth():
         self.db.session.add(self.user)
         self.db.session.commit()
         auth_str = 'Basic ' + base64.b64encode(b'kawhi:donthurtmepop').decode('utf-8')
-        res = self.client.get(url_for('api.get_token'), headers={'Authorization': auth_str})
+        res = self.client.post(url_for('api.get_token'), headers={'Authorization': auth_str})
         assert res.status_code == 200
         assert res.json['token']
         print(res.json['token'])
@@ -21,7 +21,7 @@ class TestAuth():
         self.db.session.add(self.user)
         self.db.session.commit()
         auth_str = 'Basic ' + base64.b64encode(b'kawhi:donthurtmepop').decode('utf-8')
-        res = self.client.get(url_for('api.get_token'), headers={'Authorization': auth_str})
+        res = self.client.post(url_for('api.get_token'), headers={'Authorization': auth_str})
         assert res.status_code == 200
         assert res.json['token']
         print(res.json['token'])
