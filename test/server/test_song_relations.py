@@ -319,16 +319,16 @@ class TestSongRelationsApi():
         res = self.client.get(url_for('api.get_song_relations', id=song_id, top=10),
                                content_type='application/json')
         assert res.status_code == 200
-        assert len(res.json) == 3
-        assert res.json[0]['id'] == self.songs['edm'][1]['id']
-        assert res.json[1]['id'] == self.songs['hiphop'][1]['id']
-        assert res.json[2]['id'] == self.songs['indie'][0]['id']
+        assert len(res.json['related_songs']) == 3
+        assert res.json['related_songs'][0]['id'] == self.songs['edm'][1]['id']
+        assert res.json['related_songs'][1]['id'] == self.songs['hiphop'][1]['id']
+        assert res.json['related_songs'][2]['id'] == self.songs['indie'][0]['id']
 
         res = self.client.get(url_for('api.get_song_relations', id=song_id, top=1),
                               content_type='application/json')
         assert res.status_code == 200
-        assert len(res.json) == 1
-        assert res.json[0]['id'] == self.songs['edm'][1]['id']
+        assert len(res.json['related_songs']) == 1
+        assert res.json['related_songs'][0]['id'] == self.songs['edm'][1]['id']
 
     def test_get_song_relations_top_query_param(self):
         song_id = self.songs['edm'][0]['id']

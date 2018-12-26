@@ -22,6 +22,7 @@ services:
     volumes:
       - ./client/:/soundslike/client
       - ./server:/soundslike/server
+      - ./test/:/soundslike/test
       - /soundslike/server/static
   migrate_db:
     <<: *app

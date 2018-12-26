@@ -94,8 +94,9 @@ class TestSongsApi():
         id = res.json['id']
         res = self.client.get(url_for('api.get_song', id=id))
         assert res.status_code == 200
-        assert res.json['title'] == data['title']
-        assert res.json['artist'] == data['artist']
-        assert res.json['url'] == data['url']
-        assert res.json['id']
-        assert res.json['created_by']['username'] == self.mock_user['username']
+        assert res.json['song']['title'] == data['title']
+        assert res.json['song']['artist'] == data['artist']
+        assert res.json['song']['url'] == data['url']
+        assert res.json['song']['id']
+        assert res.json['song']['created_by']['username'] == self.mock_user['username']
+        assert res.json['related_songs'] == []
