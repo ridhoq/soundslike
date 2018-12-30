@@ -115,17 +115,31 @@ Response:
 
 Response:
 ```json
-[
-  {
-    "artist": "Portugal, The Man",
-    "created": "Thu, 06 Dec 2018 04:25:37 GMT",
-    "id": 3,
-    "title": "Feel It Still",
-    "url": "https://www.youtube.com/watch?v=pBkHHoOIIn8",
-    "user_id": 6,
-    "vote_count": 1
+{
+  "related_songs": [
+    {
+      "artist": "Portugal, The Man",
+      "created": "Thu, 06 Dec 2018 04:25:37 GMT",
+      "id": 3,
+      "title": "Feel It Still",
+      "url": "https://www.youtube.com/watch?v=pBkHHoOIIn8",
+      "user_id": 6,
+      "vote_count": 1
+    }
+  ],
+  "song": {
+    "artist": "Wartime Afternoon",
+    "created": "Thu, 06 Dec 2018 04:18:33 GMT",
+    "created_by": {
+      "email": "wartimeafternoon@gmail.com",
+      "member_since": "Tue, 04 Dec 2018 05:06:48 GMT",
+      "username": "wartimeafternoon"
+    },
+    "id": 2,
+    "title": "Marjik Janson",
+    "url": "https://www.youtube.com/watch?v=SUpV91yo1-M"
   }
-]
+}
 ``` 
 
 ### `POST /api/song_relations/`
