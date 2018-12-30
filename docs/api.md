@@ -1,19 +1,21 @@
 # soundslike - API documentation
-Learn how to use the soundslike API!
 
-## Authentication 
+Learn how to use the soundslike API!!!!!!!!
 
-### `POST /api/token` 
+## Authentication
 
-This requires a username and password with Basic HTTP Authentication 
+### `POST /api/token`
+
+This requires a username and password with Basic HTTP Authentication
 
 Response:
+
 ```json
-    {
-        "expiration": 3000,
-        "token": "token_string"
-    }
-``` 
+{
+  "expiration": 3000,
+  "token": "token_string"
+}
+```
 
 For all API requests that require authentication, you need to use the `token` with these steps
 
@@ -23,49 +25,56 @@ For all API requests that require authentication, you need to use the `token` wi
 
 3.The `token` must be base64 encoded with the colon appended to it
 
-## Users 
+## Users
 
 ### `POST /api/users/`
 
 This creates a new user.
 
 Body:
+
 ```json
 {
-    "username" : "method_man", 
-    "email" : "method_man@wutang.clan", 
-    "password": "cashruleseverythingaroundme"
+  "username": "method_man",
+  "email": "method_man@wutang.clan",
+  "password": "cashruleseverythingaroundme"
 }
-``` 
+```
+
 Response:
+
 ```json
 {
-    "email": "ethod_man@wutang.clan",
-    "member_since": "Fri, 07 Dec 2018 06:19:28 GMT",
-    "username": "method_man"
+  "email": "ethod_man@wutang.clan",
+  "member_since": "Fri, 07 Dec 2018 06:19:28 GMT",
+  "username": "method_man"
 }
-``` 
-### `GET /api/users/<username>` 
+```
+
+### `GET /api/users/<username>`
 
 EX. /api/users/method_man
 
 Response:
+
 ```json
 {
-    "email": "method_man@wutang.com",
-    "member_since": "Fri, 07 Dec 2018 06:19:28 GMT",
-    "username": "method_man"
+  "email": "method_man@wutang.com",
+  "member_since": "Fri, 07 Dec 2018 06:19:28 GMT",
+  "username": "method_man"
 }
-``` 
+```
+
 _NOTE: the email field is only available when requesting your own user_
 
-## Songs 
+## Songs
 
 ### `GET /api/songs/<song_id>`
 
 EX. /api/songs/2
 
 Response:
+
 ```json
 {
   "artist": "Wartime Afternoon",
@@ -79,21 +88,24 @@ Response:
   "title": "Marjik Janson",
   "url": "https://www.youtube.com/watch?v=SUpV91yo1-M"
 }
-``` 
+```
 
 ### `POST /api/songs/`
 
-This creates a new song. 
+This creates a new song.
 
 Body:
+
 ```json
 {
-    "title" : "Feel It Still",
-    "artist" : "Portugal, The Man",
-    "url" : "https://www.youtube.com/watch?v=pBkHHoOIIn8"
+  "title": "Feel It Still",
+  "artist": "Portugal, The Man",
+  "url": "https://www.youtube.com/watch?v=pBkHHoOIIn8"
 }
-``` 
+```
+
 Response:
+
 ```json
 {
   "artist": "Portugal, The Man",
@@ -107,13 +119,14 @@ Response:
   "title": "Feel It Still",
   "url": "https://www.youtube.com/watch?v=pBkHHoOIIn8"
 }
-``` 
+```
 
 ## Song Relations
 
 ### `GET /api/songs/<song_id>/related`
 
 Response:
+
 ```json
 [
   {
@@ -126,18 +139,21 @@ Response:
     "vote_count": 1
   }
 ]
-``` 
+```
 
 ### `POST /api/song_relations/`
 
 Body:
+
 ```json
 {
-    "song1_id" : "3",
-    "song2_id" : "2"
+  "song1_id": "3",
+  "song2_id": "2"
 }
-``` 
+```
+
 Response:
+
 ```json
 {
   "created": "Sat, 08 Dec 2018 01:45:13 GMT",
@@ -174,11 +190,12 @@ Response:
   },
   "vote_count": 1
 }
-``` 
+```
 
 ### `POST /api/song_relations/<song_relation_id>/vote`
 
 Response:
+
 ```json
 {
   "created": "Thu, 06 Dec 2018 04:29:39 GMT",
@@ -215,11 +232,12 @@ Response:
   },
   "vote_count": 1
 }
-``` 
+```
 
 ### `DELETE /api/song_relations/<song_relation_id>/vote`
 
 Response:
+
 ```json
 {
   "created": "Sat, 08 Dec 2018 01:45:13 GMT",
@@ -256,5 +274,6 @@ Response:
   },
   "vote_count": 0
 }
-``` 
+```
+
 _NOTE: There will be one fewer vote_
