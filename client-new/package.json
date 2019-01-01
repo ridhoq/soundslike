@@ -49,6 +49,8 @@
     "react-dom": "^16.7.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.84.0",
     "style-loader": "0.23.0",
     "terser-webpack-plugin": "1.1.0",
     "typescript": "^3.2.2",
@@ -61,7 +63,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "prettier": "prettier --write --config ./.prettierrc \"**/*.{js,jsx,ts,tsx,md,less,json}\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -117,5 +120,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^1.15.3"
   }
 }
