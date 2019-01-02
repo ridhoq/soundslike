@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { Card, Embed } from 'semantic-ui-react'
 
-type SongProps = {
-    title: string
-    artist: string
-    url: string
+import { Song } from './types'
+
+type SongCardProps = {
+    song: Song
+    expanded?: boolean
+    onClick?: () => void
 }
 
-class Song extends Component<SongProps> {
+class SongCard extends Component<SongCardProps> {
     getYoutubeIdFromUrl(url: string) {
         // regex from https://stackoverflow.com/a/27728417
         const regex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/
@@ -22,16 +24,25 @@ class Song extends Component<SongProps> {
     }
 
     render() {
-        const { title, artist, url } = this.props
+        const {
+            song: { title, artist, url },
+            expanded,
+            onClick,
+        } = this.props
+
         return (
-            <Card>
+            <Card onClick={onClick}>
+                {expanded && (
+                    <Card.Content>
+                        <Embed
+                            id={this.getYoutubeIdFromUrl(url)}
+                            aspectRatio="16:9"
+                            placeholder={this.getYoutubeThumbnailUrl(url)}
+                            source="youtube"
+                        />
+                    </Card.Content>
+                )}
                 <Card.Content>
-                    <Embed
-                        id={this.getYoutubeIdFromUrl(url)}
-                        aspectRatio="16:9"
-                        placeholder={this.getYoutubeThumbnailUrl(url)}
-                        source="youtube"
-                    />
                     <Card.Header>{title}</Card.Header>
                     <Card.Meta>
                         <span>{artist}</span>
@@ -42,4 +53,4 @@ class Song extends Component<SongProps> {
     }
 }
 
-export default Song
+export default SongCard
