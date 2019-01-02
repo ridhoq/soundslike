@@ -31,7 +31,7 @@ class SongCard extends Component<SongCardProps> {
         } = this.props
 
         return (
-            <Card onClick={onClick}>
+            <Card centered onClick={onClick}>
                 {expanded && (
                     <Card.Content>
                         <Embed

@@ -4,8 +4,6 @@ import { Grid, Header } from 'semantic-ui-react'
 import SongCard from './SongCard'
 import { Song } from './types'
 
-import './SongBrowser.css'
-
 type SongBrowserState = {
     currentSong: Song
     relatedSongs: Song[]
@@ -49,29 +47,35 @@ class SongBrowser extends Component<{}, SongBrowserState> {
     render() {
         const { currentSong, relatedSongs, previousSongs } = this.state
         return (
-            <div className="songBrowser">
-                <div className="songBrows previousSongs">
-                    <Header as="h2">Previous Songs</Header>
+            <Grid columns="3">
+                <Grid.Column>
+                    <Header as="h2" inverted>
+                        Previous Songs
+                    </Header>
                     {previousSongs.map(relatedSong => (
                         <SongCard
                             song={relatedSong}
                             onClick={() => this.setCurrentSong(relatedSong)}
                         />
                     ))}
-                </div>
-                <div className="songBrowser currentSong">
-                    <SongCard song={currentSong} expanded={true} />
-                </div>
-                <div className="songBrowser relatedSongs">
-                    <Header as="h2">Related Songs</Header>
+                </Grid.Column>
+                <Grid.Column>
+                    <Grid.Row verticalAlign="middle">
+                        <SongCard song={currentSong} expanded />
+                    </Grid.Row>
+                </Grid.Column>
+                <Grid.Column textAlign="center">
+                    <Header as="h2" inverted>
+                        Related Songs
+                    </Header>
                     {relatedSongs.map(relatedSong => (
                         <SongCard
                             song={relatedSong}
                             onClick={() => this.setCurrentSong(relatedSong)}
                         />
                     ))}
-                </div>
-            </div>
+                </Grid.Column>
+            </Grid>
         )
     }
 }
