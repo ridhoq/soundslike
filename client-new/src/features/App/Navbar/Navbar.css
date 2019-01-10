@@ -1,0 +1,7 @@
+.Navbar {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  justify-content: flex-start;
+  font-size: calc(10px + 2vmin);
+}
