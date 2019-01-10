@@ -15,7 +15,7 @@ Response:
     }
 ``` 
 
-For all API requests that require authentication, you need to use the `token` with these steps
+For all API requests that require authentication, you need to use a `token` with these steps
 
 1.The `token` must be passed in the Authorization header
 
