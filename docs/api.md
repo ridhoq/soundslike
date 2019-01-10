@@ -15,7 +15,7 @@ Response:
     }
 ``` 
 
-For all API requests that require authentication, you need to use the `token` with these steps
+For all API requests that require authentication, you need to use a `token` with these steps
 
 1.The `token` must be passed in the Authorization header
 
@@ -68,16 +68,29 @@ EX. /api/songs/2
 Response:
 ```json
 {
-  "artist": "Wartime Afternoon",
-  "created": "Thu, 06 Dec 2018 04:18:33 GMT",
-  "created_by": {
-    "email": "wartimeafternoon@gmail.com",
-    "member_since": "Tue, 04 Dec 2018 05:06:48 GMT",
-    "username": "wartimeafternoon"
-  },
-  "id": 2,
-  "title": "Marjik Janson",
-  "url": "https://www.youtube.com/watch?v=SUpV91yo1-M"
+  "related_songs": [
+    {
+      "artist": "Portugal, The Man",
+      "created": "Thu, 06 Dec 2018 04:25:37 GMT",
+      "id": 3,
+      "title": "Feel It Still",
+      "url": "https://www.youtube.com/watch?v=pBkHHoOIIn8",
+      "user_id": 6,
+      "vote_count": 1
+    }
+  ],
+  "song": {
+    "artist": "Wartime Afternoon",
+    "created": "Thu, 06 Dec 2018 04:18:33 GMT",
+    "created_by": {
+      "email": "wartimeafternoon@gmail.com",
+      "member_since": "Tue, 04 Dec 2018 05:06:48 GMT",
+      "username": "wartimeafternoon"
+    },
+    "id": 2,
+    "title": "Marjik Janson",
+    "url": "https://www.youtube.com/watch?v=SUpV91yo1-M"
+  }
 }
 ``` 
 
